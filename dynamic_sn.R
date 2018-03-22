@@ -1,12 +1,9 @@
-source("sn/src/static_sn.R")
-source("sn/src/calc_dd.R")
-source("sn/src/extract_offspring_dist.R")
-source("general/mean_ci.R")
-# start with just MSM can adapt later
+source("static_sn.R")
+source("calc_dd.R")
+
 
 sim_dynamic_sn <- function (N, 
                             gamma, k0, kmax = N-1, phi, 
-                            lambdas = 0,
                             n_strain = 1,  n_infs = 0, prop_pres = 1, efficacy = 1,
                             beta = 1, psi = 1,  sigma = 1, alpha = 1,
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
@@ -15,9 +12,7 @@ sim_dynamic_sn <- function (N,
   
   start <- Sys.time ()
   
-  
-  # do this more elegantly later, do chapter in R book on functions having optional arguments
-  if(all(lambdas == 0)) lambdas <- rexp(n = N, rate = 1) #basic lambda ~ Exp(1) for now
+  lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
   
   
   kmax_opt <- optimise(f = function(z) {
@@ -34,7 +29,7 @@ sim_dynamic_sn <- function (N,
   if(opt_phi) phi <- max(phi, min_phi)
   
   
-  inputs <- list(N = N, gamma = gamma, k0 = k0, kmax = kmax, phi = phi, lambdas = lambdas,
+  inputs <- list(N = N, gamma = gamma, k0 = k0, kmax = kmax, phi = phi, 
                  n_strain = n_strain,  n_infs = n_infs, prop_pres = prop_pres, efficacy = efficacy,
                  beta = beta, psi = psi, sigma = sigma, alpha = alpha,
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
