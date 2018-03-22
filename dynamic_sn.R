@@ -72,7 +72,7 @@ sim_dynamic_sn <- function (N,
   
   
   radd_mat <- -log(g_fac - gl %o% gl) # work on this to speed up?
-  if(!opt_phi) radd_mat <- pmax(radd_mat, 1/50/phi) # if not optimising phi force min a(,) to be 0
+  radd_mat <- pmax(radd_mat, 1/50/phi) # if not optimising phi force min a(,) to be 0
   diag(radd_mat) <- 0 # so if in relationship it is for the rest of their life
   
   radd <- sum(radd_mat)/2 #total rate of adding relationships
