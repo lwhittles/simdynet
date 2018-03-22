@@ -4,7 +4,7 @@ source("calc_dd.R")
 
 sim_dynamic_sn <- function (N, 
                             gamma, k0,  phi, 
-                            n_strain = 1,  n_infs = 0,  efficacy = 1,
+                            n_strain = 1,  n_infs = 0,
                             beta = 1, psi = 1,  sigma = 1, alpha = 1,
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
                             t, max.iter, burn.in = t,
@@ -13,7 +13,7 @@ sim_dynamic_sn <- function (N,
   start <- Sys.time ()
   
   inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
-                 n_strain = n_strain,  n_infs = n_infs, efficacy = efficacy,
+                 n_strain = n_strain,  n_infs = n_infs,
                  beta = beta, psi = psi, sigma = sigma, alpha = alpha,
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
                  t = t, max.iter = max.iter, burn.in = burn.in,
@@ -38,10 +38,7 @@ sim_dynamic_sn <- function (N,
   if (n_strain != length(beta)) stop("number of strains and supplied betas do not match")
   if (n_strain != length(alpha)) stop("number of strains and supplied alphas do not match")
   if (n_strain != length(n_infs)) stop("number of strains and supplied infs do not match")
-    if(sum(dim(efficacy) - n_strain) != 0) stop('efficacy matrix does not match number of strains')
-  if(any(efficacy > 1) | any(efficacy < 0)) stop('efficacy must be between 0 and 1')
-  
-  efficacy <- as.matrix(efficacy)
+ 
   
   nualpha <- nu * alpha
 
