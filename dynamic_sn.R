@@ -3,38 +3,30 @@ source("calc_dd.R")
 
 
 sim_dynamic_sn <- function (N, 
-                            gamma, k0, kmax = N-1, phi, 
+                            gamma, k0,  phi, 
                             n_strain = 1,  n_infs = 0, prop_pres = 1, efficacy = 1,
                             beta = 1, psi = 1,  sigma = 1, alpha = 1,
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
                             t, max.iter, burn.in = t,
-                            record=FALSE, record_term = 1, record_lengths = FALSE, opt_phi = TRUE) {
+                            record=FALSE, record_term = 1, record_lengths = FALSE) {
   
   start <- Sys.time ()
   
-  lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
-  
-  
-  kmax_opt <- optimise(f = function(z) {
-    abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
-  }, 
-  interval = c(1, N))
-  kmax_opt <- floor(kmax_opt$minimum)
-  kmax <- min(kmax, kmax_opt)
-  
-  
-  # check phi is big enough
-  min_phi <- ceiling(calculate_g(x = 0, gamma = gamma, k0 = k0, N = 1e4, kmax = kmax)$g ^ -2 - 1)
-  
-  if(opt_phi) phi <- max(phi, min_phi)
-  
-  
-  inputs <- list(N = N, gamma = gamma, k0 = k0, kmax = kmax, phi = phi, 
+  inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
                  n_strain = n_strain,  n_infs = n_infs, prop_pres = prop_pres, efficacy = efficacy,
                  beta = beta, psi = psi, sigma = sigma, alpha = alpha,
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
                  t = t, max.iter = max.iter, burn.in = burn.in,
                  record_term = record_term)
+  
+  lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
+  
+  
+  kmax <- optimise(f = function(z) { # find optimal kmax
+    abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
+  }, 
+  interval = c(1, N))
+  kmax <- floor(kmax$minimum)
   
 
   # n_infs is a vector of length n_strain
@@ -451,7 +443,7 @@ sim_dynamic_sn <- function (N,
   }
   
   
-  sn <- list(inputs = inputs, const = const, 
+  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
              log_infs = log_infs,
              vax_check = intersect(v, log_infs$p),
              # infs.t = infs.t, 
