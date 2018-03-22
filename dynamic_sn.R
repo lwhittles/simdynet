@@ -22,13 +22,13 @@ sim_dynamic_sn <- function (N,
   lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
   
   
-  kmax <- optimise(f = function(z) { # find optimal kmax
+  kmax <- optimise(f = function(z) {
     abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
   }, 
   interval = c(1, N))
   kmax <- floor(kmax$minimum)
-  
 
+ 
   # n_infs is a vector of length n_strain
   # burn.in is now in days not iterations
   # infs is now a N x n_strain matrix of 0s and 1s
