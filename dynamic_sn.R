@@ -5,7 +5,7 @@ source("calc_dd.R")
 sim_dynamic_sn <- function (N, 
                             gamma, k0,  phi, 
                             n_strain = 1,  n_infs = 0,
-                            beta = 1, psi = 1,  sigma = 1, alpha = 1,
+                            beta = 1, psi = 1,  sigma = 1, 
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
                             t, max.iter, burn.in = t,
                             record=FALSE, record_term = 1, record_lengths = FALSE) {
@@ -14,7 +14,7 @@ sim_dynamic_sn <- function (N,
   
   inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
                  n_strain = n_strain,  n_infs = n_infs,
-                 beta = beta, psi = psi, sigma = sigma, alpha = alpha,
+                 beta = beta, psi = psi, sigma = sigma, 
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
                  t = t, max.iter = max.iter, burn.in = burn.in,
                  record_term = record_term)
@@ -36,11 +36,10 @@ sim_dynamic_sn <- function (N,
   
   #input checks
   if (n_strain != length(beta)) stop("number of strains and supplied betas do not match")
-  if (n_strain != length(alpha)) stop("number of strains and supplied alphas do not match")
   if (n_strain != length(n_infs)) stop("number of strains and supplied infs do not match")
  
   
-  nualpha <- nu * alpha
+
 
   
   time.window <- c(0, t)
@@ -152,7 +151,7 @@ sim_dynamic_sn <- function (N,
         degree_vec[as.numeric(names(tab))] <- tab
       }
       rscreen <- eta*sum(n_infs) # increase screening rate by eta
-      rrec <- sum(nualpha[strains[w]]) # increase recovery rate by nu * alpha
+      rrec <- nu # increase recovery rate by nu 
       rinf <- NRel * sum(beta)  # R^_i(t_b)
     }
 
@@ -275,7 +274,7 @@ sim_dynamic_sn <- function (N,
       }
       else if (symptoms_vec[step] == "A") { # if remains asymptomatic
         rscreen <- rscreen + eta # increase screening rate by eta
-        rrec <- rrec + nualpha[strain] # increase recovery rate by nu * alpha
+        rrec <- rrec + nu # increase recovery rate by nu 
         log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 2, 4, strain, w, repeat_infs[w])
       }
     }
@@ -309,7 +308,7 @@ sim_dynamic_sn <- function (N,
       infs[w, c("A", "T")] <- c(F, T) # remove infection from asymptomatic stage, add infection to treatment stage
       Ninf[strain, c("A", "T")] <- Ninf[strain, c("A", "T")] + c(-1, 1) # remove infection from asymptomatic stage, add infection to treatment stage
       
-      rrec <- rrec - nualpha[strain] # decrease overall rate of recovery by nu * alpha
+      rrec <- rrec - nu # decrease overall rate of recovery by nu 
       rscreen <- rscreen - eta # decrease screening rate by eta
       rcure <- rcure + rho # increase the overall rate of cure by rho
       log_infs[step, c("time", "c1", "c2", "strain", "p","p_ninf")] <- c(time, 4, 5, strain, w, repeat_infs[w])
@@ -317,7 +316,7 @@ sim_dynamic_sn <- function (N,
     
     else if (e == 'rrec') {
       # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      strain <- sample.int(n = n_strain, size = 1, prob = Ninf[, "A"] * nualpha) # sample which strain with prob A_s * nu * alpha
+      strain <- sample.int(n = n_strain, size = 1, prob = Ninf[, "A"] * nu) # sample which strain with prob A_s * nu
       if(Ninf[strain, "A"] == 1) w <- N_vec[strains == strain & infs[, "A"]]
       else w <- sample(N_vec[strains == strain & infs[, "A"]], 1) # equal probability of recovery for all asymptomatic carriers with that strain
       
@@ -328,7 +327,7 @@ sim_dynamic_sn <- function (N,
       
       # if the above line is slow can think re-parametrise as per Rels
       
-      rrec <- rrec - nualpha[strain] # decrease overall rate of recovery
+      rrec <- rrec - nu # decrease overall rate of recovery by nu
       rscreen <- rscreen - eta # also decrease screening rate by eta
       log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 4, 1, strain, w, repeat_infs[w])
     }
