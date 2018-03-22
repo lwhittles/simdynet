@@ -22,7 +22,7 @@ sim_dynamic_sn <- function (N,
   lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
   
   
-  kmax <- optimise(f = function(z) {
+  kmax <- optimise(f = function(z) { #  optimise kmax
     abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
   }, 
   interval = c(1, N))
@@ -31,7 +31,7 @@ sim_dynamic_sn <- function (N,
  
 
   # burn.in is in days not iterations
-  # infs is now a N vector of 0s and 1s
+
   
   time.window <- c(0, t)
   time <- time.window[1]
@@ -40,48 +40,48 @@ sim_dynamic_sn <- function (N,
   
   
   # generate partnerships at equilibrium M0
-  NS <- N * (N - 1) / 2
-  q0 <- 1 / (1 + phi)
-  NRel <- rbinom(n=1, size = N ^ 2 / 2, prob = q0) # note the size is  N^2/2 because will do rejection sampling
+  NS <- N * (N - 1) / 2 # total possible partnerships
+  q0 <- 1 / (1 + phi) # equilibrium probability of partnership
+  NRel <- rbinom(n=1, size = N ^ 2 / 2, prob = q0) # note the size is  N^2/2 because will do rejection sampling on partnerhips with self
   
   rels0 <- matrix(sample.int(n = N, size = 2 * NRel, replace = T), ncol = 2) # sample partnerships (with equal probability)
   rels0 <- rels0[rels0[, 1 ] != rels0[, 2], ] # remove duplicates (rejection sampling)
   rels0 <- t(apply(X = rels0, MARGIN = 1, FUN = sort)) # put in right order (also transposes)
   NRel <- nrow(rels0) # update NRel
-  NRel0 <- NRel
+  NRel0 <- NRel # record initial number of rels for output
   
   gs <- calculate_g(x = lambdas, gamma = gamma, k0 = k0, kmax = kmax, N = N) # calculate g(lamda)
   g_fac <- 1 + 1 / phi
 
-  gl <- gs$g * sqrt(g_fac) # doing calcs on vector rather than on large matrix
+  gl <- gs$g * sqrt(g_fac) # calculations are vectotised for speed
   const <- gs$c
   
   
-  radd_mat <- -log(g_fac - gl %o% gl) # work on this to speed up?
-  radd_mat <- pmax(radd_mat, 1/50/phi) # if not optimising phi force min a(,) to be 0
-  diag(radd_mat) <- 0 # so if in relationship it is for the rest of their life
+  radd_mat <- -log(g_fac - gl %o% gl) 
+  radd_mat <- pmax(radd_mat, 1/50/phi) # set maximum partnership length
+  diag(radd_mat) <- 0 # no partnerships with self
   
-  radd <- sum(radd_mat)/2 #total rate of adding relationships
+  radd <- sum(radd_mat)/2 #total rate of adding partnerships
 
   degree_vec <- rep(0, N) # storing degree distribution if 'record' is enabled
   
-  length_mat <- NULL # storing length of each relationship if enabled
+  length_mat <- NULL # storing length of each partnership if enabled
   if (record_lengths) length_mat <- matrix(NA, nrow = max.iter/2, ncol = 4, dimnames = list(NULL, c('p1', 'p2', 'start', 'end')))
   
   
-  # refine matrix size to be within 2sds of mean NS * q0
+  # matrix set to be large enough to store double expected rels (to be safe)
   rels <- matrix(NA, nrow = NS * q0 * 2, ncol = 4, dimnames = list(NULL, c('p1', 'p2', 'rdel', 't')))
-  rels[1:NRel, c("p1", "p2") ] <- rels0  # which relationships currently exist?
-  rels[1:NRel, "rdel"] <- radd_mat[rels0] * phi # add column of rdel for current relationships
-  rels[1:NRel, "t"]  <- -rexp(n = NRel, rate = rels[1:NRel, "rdel"]) # add col of time at which each relationship formed
+  rels[1:NRel, c("p1", "p2") ] <- rels0  # which partnerships currently exist?
+  rels[1:NRel, "rdel"] <- radd_mat[rels0] * phi # add column of rdel for current partnerships
+  rels[1:NRel, "t"]  <- -rexp(n = NRel, rate = rels[1:NRel, "rdel"]) # add col of time at which each partnership formed
   
-  rdel <- sum(rels[, "rdel"], na.rm = T) #total rate of deleting relationships             
+  rdel <- sum(rels[, "rdel"], na.rm = T) #total rate of deleting partnerships             
     
-  rels.t <- rep(0, max.iter) # storing number of relationships over time
-  total_rel <- 0 # counter of relationships ever in network, count as they break up
+  rels.t <- rep(0, max.iter) # storing number of partnerships over time
+  total_rel <- 0 # counter of partnerships ever in network, count as they break up
   
   
-  # pre-generate matrix of proposed relationships (rather than doing in loop)
+  # pre-generate matrix of proposed partnerships (rather than doing in loop)
   p <- sample.int(N^2, size = max.iter, replace = T, prob = radd_mat )
   W <- cbind((p - 1) %% N + 1 , (p - 1) %/% N + 1) # populate matrix based on p
   
@@ -91,7 +91,7 @@ sim_dynamic_sn <- function (N,
   repeat_infs <- rep(0,N) # vector used to calculate total number of infections for each infectee
   N_vec <- 1:N # used to speed up sampling in loop
   
-  strains <- rep(0,N)
+  strains <- rep(0,N) # storage vector for wildtype or vaccine infection
   
   Ninf <- rep(0, n_stage)
   names(Ninf) <- c("U", "E", "A", "T")
@@ -107,8 +107,8 @@ sim_dynamic_sn <- function (N,
   rsymp <- 0 # set initial rate of leaving incubation stage = 0 (as implemented after burn-in)
   rtreat <- 0 # set initial rate of seeking treatment = 0 (as implemented after burn-in)
   rrec <-  0  # set initial rate of recovery = 0 (as implemented after burn-in)
-  rscreen <- 0 
-  rcure <- 0
+  rscreen <- 0 # set initial rate of screening = 0 (as implemented after burn-in)
+  rcure <- 0 # set initial rate of cure = 0 (as implemented after burn-in)
   step <- 1
   ext <- FALSE 
   ext_day <- t*365
@@ -130,28 +130,21 @@ sim_dynamic_sn <- function (N,
          strains[v] <- 99 ### vaccinate
       }
       if (record) {
-        tab <- table(rels[, 1:2])
+        tab <- table(rels[, c("p1", "p2")])
         degree_vec[as.numeric(names(tab))] <- tab
       }
       rscreen <- eta*sum(n_infs) # increase screening rate by eta
       rrec <- nu # increase recovery rate by nu 
-      rinf <- NRel * sum(beta)  # R^_i(t_b)
+      rinf <- NRel * beta  # R^_i(t_b)
     }
 
     if (time > breaktime & sum(infs)==0) break
-    # print(c(radd, rdel, rinf, rrec))
+
     prob <- c(radd, rdel, rinf, rsymp, rtreat, rrec, rscreen, rcure) # now a vector of length 7 
-    # names(prob) <- c('radd', 'rdel', 'rinf', 'rsymp', 'rtreat', 'rrec', 'rscreen', 'rcure')
     if(any(prob < -1e-10)) browser()
     if(any(prob < 0)) prob <- pmax(0, prob)
     if(length(prob) != 8) browser()
-    # if(abs(sum(prob[-(1:3)] - colSums(Ninf)[c("U", "E", "A", "A", "T")]*c(sigma, mu, nu, eta, rho))) > 0.1)  browser()
-    # prob[-(1:3)]
-    # colSums(Ninf)[c("U", "E", "A", "A", "T")]*c(sigma, mu, nu, eta, rho)
-    # infs.t[,,step -2:0]
-      # if((time > burn.in) & (abs(sum(colSums(infs) - colSums(Ninf) )) > 1e-10)) browser()
-    # colSums(infs)
-    # Ninf
+    
     e <- sample(c('radd', 'rdel', 'rinf', 'rsymp', 'rtreat', 'rrec', 'rscreen', 'rcure'), size = 1, prob = prob)
     
     # generate event time
@@ -162,39 +155,37 @@ sim_dynamic_sn <- function (N,
     times[step] <- time
     
     if (e =='radd') {
-      # print(paste0("radd = ", radd ))
-      #add relation
-      w <- W[step,]
-      # if (w[1]==w[2]) next # cannot have relationship with self (no longer needed)
-      # if (!sex_poss[type[w[1]], type[w[2]]]) next # relation not possible (no longer needed)
-      if (w[1] > w[2]) w <- w[c(2, 1)]
-      if (NRel > 0 & {any({rels[1:NRel, 1] == w[1]} & {rels[1:NRel, 2] == w[2]})}) next #relation already exists
-        
-      r <- radd_mat[w[1], w[2]] * phi
 
-      rels[NRel + 1, ] <- c(w, r, time)
-      NRel <- NRel + 1
-      rdel <- rdel + r
-      rinf <- rinf + sum(beta) # increase overall rate of infection
+      #add partnership
+      w <- W[step,]
+      if (w[1] > w[2]) w <- w[c(2, 1)] # order sequentially
+      if (NRel > 0 & {any({rels[1:NRel, 1] == w[1]} & {rels[1:NRel, 2] == w[2]})}) next # partnership already exists
+        
+      r <- radd_mat[w[1], w[2]] * phi # calculate rate of breakup
+
+      rels[NRel + 1, c('p1', 'p2', 'rdel', 't')] <- c(w, r, time) # store details of new partnership
+      NRel <- NRel + 1  # increase overall number of partnerships
+      rdel <- rdel + r  # increase overall rate of breakup by r
+      rinf <- rinf + beta # increase overall rate of infection by beta
       if(record & time <= record_term) degree_vec[w] <- degree_vec[w] + 1
     } 
     
     else if (e=='rdel') {
-      #remove relation
-      # print(paste0("rdel = ", rdel, " vs. ", sum(rels[,3]) ))
+      #remove partnership
+
       w <- sample.int(NRel, 1, prob = rels[1:NRel, 'rdel'])
       
-      if(record_lengths) { # update this on breakup for simplicity
-        total_rel <- total_rel + 1 # increase total number of completed relationships by 1
+      if(record_lengths) { 
+        total_rel <- total_rel + 1 # increase total number of completed partnerships by 1
         length_mat[total_rel, c('p1', 'p2', 'start')] <- rels[w, c('p1', 'p2', 't')] # store partners and start time
-        length_mat[total_rel, 'end'] <- time  # record current time as relationship ends
+        length_mat[total_rel, 'end'] <- time  # record current time as partnership ends
       }
       
       rdel <- rdel - rels[w, 'rdel']
-      if(rdel < 0 ) browser()
+      if(rdel < 0 ) browser() 
       rinf <- rinf - sum(beta) # reduce overall rate of infection
       rels[w, ] <- rels[NRel, ] # move last rel recorded to replace deleted rel
-      rels[NRel, ] <- NA
+      rels[NRel, ] <- NA 
       NRel <- NRel - 1     # decrease total rels by 1
       
     } 
@@ -203,9 +194,9 @@ sim_dynamic_sn <- function (N,
     if (e=='rinf') {
 
       w <- sample.int(NRel, 1) # choose one couple
-      w_inf_status <- strains[rels[w, c("p1", "p2")]] # find their infection status
+      w_inf_status <- strains[rels[w, c("p1", "p2")]] # find their infection statuses
       
-      if( !any(w_inf_status == 1)) next # neither are infected with strain
+      if( !any(w_inf_status == 1)) next # neither are infected 
       if( any(w_inf_status == 99)) next # one is vaccinated
       if( all(w_inf_status > 0 )) next # both are infected
       if( any(infs[rels[w, c("p1", "p2")], "T"])) next # in treatment so not infectious
@@ -219,12 +210,12 @@ sim_dynamic_sn <- function (N,
       infs[infectee, "U"] <- T # record infected status for infectee
       strains[infectee] <- 1
       Ninf[ "U"] <- Ninf[ "U"] + 1 # increase total infs 1
-      repeat_infs[infectee] <- repeat_infs[infectee] + 1
+      repeat_infs[infectee] <- repeat_infs[infectee] + 1 # increase total number of infections for infectee
       log_infs[step, c("time", "c1", "c2", "p", "infector", "infector_ninf","infector_stage", "p_ninf")] <- c(time, 1, 2, infectee, infector, repeat_infs[infector], which(infs[infector, ])+1, repeat_infs[infectee])
     }      
     
     else if (e == 'rsymp') {
-      # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
+
       if(Ninf["U"] == 1) w <- N_vec[infs[,"U"]]
       else w <- sample(x = N_vec[infs[,"U"]], size = 1) # equal probability of leaving incubation stage for all new infections
       
@@ -245,14 +236,9 @@ sim_dynamic_sn <- function (N,
     }
     
     else if (e == 'rtreat') {
-      # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      if(length(N_vec[infs[,"E"]]) ==0) browser()
+
       if(Ninf["E"] == 1) w <- N_vec[infs[,"E"]]
       else w <- sample(x = N_vec[infs[,"E"]], size = 1) # equal probability of treatment seeking for all symptomatic carriers
-
-      # if the above line is slow can think re-parametrise as per Rels
-      # print(paste0("infs = ", colSums(infs[,1,])))
-      # print(paste0("NInf = ", Ninf))
       
       infs[w, c("E", "T")] <- c(F, T) # remove infection from symptomatic stage, add infection to treatment stage
       Ninf[c("E", "T")] <- Ninf[c("E", "T")] + c(-1, 1) # remove infection from symptomatic stage, add infection to treatment stage
@@ -263,7 +249,7 @@ sim_dynamic_sn <- function (N,
     }
     
     else if (e == 'rscreen') {
-      # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
+
       if(Ninf["A"] == 1) w <- N_vec[infs[,"A"]]
       else w <- sample(x = N_vec[infs[,"A"]], size = 1) # equal probability of being screened for all asymptomatic carriers
 
@@ -277,7 +263,7 @@ sim_dynamic_sn <- function (N,
     }
     
     else if (e == 'rrec') {
-      # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
+
       if(Ninf["A"] == 1) w <- N_vec[strains == 1 & infs[, "A"]]
       else w <- sample(N_vec[strains == 1 & infs[, "A"]], 1) # equal probability of recovery for all asymptomatic carriers with that strain
 
@@ -285,23 +271,16 @@ sim_dynamic_sn <- function (N,
       infs[w, "A"] <- F # remove infection from asymptomatic stage and set strain to 0
       strains[w] <- 0
       
-      # if the above line is slow can think re-parametrise as per Rels
-      
       rrec <- rrec - nu # decrease overall rate of recovery by nu
       rscreen <- rscreen - eta # also decrease screening rate by eta
       log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 4, 1, w, repeat_infs[w])
     }
     
     else if (e == 'rcure') {
-      # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      # probw <- rowSums(infs[, , "T", drop = F])
-      # if(sum(probw) < 1) browser()
-      # print(sum(probw))
+
       if(Ninf["T"] == 1) w <- N_vec[infs[,"T"]]
       else w <- sample(x = N_vec[infs[,"T"]], size = 1) # equal probability of cure for all treated infections
-
-      
-      
+  
       Ninf["T"] <- Ninf[ "T"] - 1 # decrease total infs by 1
       infs[w, "T"] <- F # remove infection from treatment stage and set strain to 0
       rcure <- rcure - rho # decrease the overall rate of cure by rho
@@ -322,12 +301,10 @@ sim_dynamic_sn <- function (N,
   Nstep <- step - 1
   times <- c(0,times[1:Nstep])
   log_infs <- log_infs[!is.na(log_infs[,1]), ,drop=F]
-  # times <- c(0, times)
   rels.t <- c(NRel0, rels.t[1:Nstep])
-   # infs.t <- infs.t[, , 1:Nstep, drop=F]
   
   log_infs  <- as.data.frame(log_infs)
-  # print(log_infs)
+
   if( nrow(log_infs) > 0) {
     log_infs$c1 <- factor(x = log_infs$c1, levels = 1:5, labels = c("S", "U", "E", "A", "T"))
     log_infs$c2 <- factor(x = log_infs$c2, levels = 1:5, labels = c("S", "U", "E", "A", "T"))
@@ -367,12 +344,7 @@ sim_dynamic_sn <- function (N,
   
   
   if(record) {
-    net_out <- list( 
-      # rels=rels[1:NRel,c("p1", "p2") ], 
-                     # rec_rels = rec_rels[1:NRel_rec, ],
-                     # rel_lengths = length_mat[,"length"], 
-                     # rels.t = rels.t, 
-                     degree = degree_vec, 
+    net_out <- list(degree = degree_vec, 
                      degree_curr = deg_curr, prop0_curr = prop0_curr)
     sn <- c(sn, net_out)
   }
@@ -381,8 +353,6 @@ sim_dynamic_sn <- function (N,
   sn$R0 <- rep(0,3)
   
   if(sum(new_inf_event)>0) {
-    # dists <- extract_dists(sn)
-    # sn$dists <- dists
     sn$R0 <- rep(0,3)
   }
 
@@ -393,7 +363,6 @@ sim_dynamic_sn <- function (N,
   
   sn$ext = ext
   sn$ext_day = ext_day
-  
   sn$total_treated <- sum(((log_infs$c1==5) | (log_infs$c1 == "T")) & log_infs$time <1 )
   
   
