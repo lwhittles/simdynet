@@ -3,7 +3,7 @@ source("calc_dd.R")
 
 
 sim_dynamic_sn <- function (N, 
-                            gamma, k0, kmax = N-1, phi, 
+                            gamma, k0,  phi, 
                             n_strain = 1,  n_infs = 0, prop_pres = 1, efficacy = 1,
                             beta = 1, psi = 1,  sigma = 1, alpha = 1,
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
@@ -15,12 +15,11 @@ sim_dynamic_sn <- function (N,
   lambdas <- rexp(n = N, rate = 1) # sample N lambda ~ Exp(1)
   
   
-  kmax_opt <- optimise(f = function(z) {
+  kmax <- optimise(f = function(z) {
     abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
   }, 
   interval = c(1, N))
-  kmax_opt <- floor(kmax_opt$minimum)
-  kmax <- min(kmax, kmax_opt)
+  kmax <- floor(kmax$minimum)
   
   
   # check phi is big enough
@@ -29,7 +28,7 @@ sim_dynamic_sn <- function (N,
   if(opt_phi) phi <- max(phi, min_phi)
   
   
-  inputs <- list(N = N, gamma = gamma, k0 = k0, kmax = kmax, phi = phi, 
+  inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
                  n_strain = n_strain,  n_infs = n_infs, prop_pres = prop_pres, efficacy = efficacy,
                  beta = beta, psi = psi, sigma = sigma, alpha = alpha,
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
@@ -451,7 +450,7 @@ sim_dynamic_sn <- function (N,
   }
   
   
-  sn <- list(inputs = inputs, const = const, 
+  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
              log_infs = log_infs,
              vax_check = intersect(v, log_infs$p),
              # infs.t = infs.t, 
