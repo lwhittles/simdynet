@@ -4,7 +4,7 @@ source("calc_dd.R")
 
 sim_dynamic_sn <- function (N, 
                             gamma, k0,  phi, 
-                            n_strain = 1,  n_infs = 0, prop_pres = 1, efficacy = 1,
+                            n_strain = 1,  n_infs = 0,  efficacy = 1,
                             beta = 1, psi = 1,  sigma = 1, alpha = 1,
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
                             t, max.iter, burn.in = t,
@@ -13,7 +13,7 @@ sim_dynamic_sn <- function (N,
   start <- Sys.time ()
   
   inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
-                 n_strain = n_strain,  n_infs = n_infs, prop_pres = prop_pres, efficacy = efficacy,
+                 n_strain = n_strain,  n_infs = n_infs, efficacy = efficacy,
                  beta = beta, psi = psi, sigma = sigma, alpha = alpha,
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
                  t = t, max.iter = max.iter, burn.in = burn.in,
@@ -38,14 +38,13 @@ sim_dynamic_sn <- function (N,
   if (n_strain != length(beta)) stop("number of strains and supplied betas do not match")
   if (n_strain != length(alpha)) stop("number of strains and supplied alphas do not match")
   if (n_strain != length(n_infs)) stop("number of strains and supplied infs do not match")
-  if(sum(prop_pres) != 1) stop('proportion of prescriptions does not sum to 1')
-  if(sum(dim(efficacy) - n_strain) != 0) stop('efficacy matrix does not match number of strains')
+    if(sum(dim(efficacy) - n_strain) != 0) stop('efficacy matrix does not match number of strains')
   if(any(efficacy > 1) | any(efficacy < 0)) stop('efficacy must be between 0 and 1')
   
   efficacy <- as.matrix(efficacy)
   
   nualpha <- nu * alpha
-  n_pres <- length(prop_pres)
+
   
   time.window <- c(0, t)
   time <- time.window[1]
@@ -113,8 +112,7 @@ sim_dynamic_sn <- function (N,
   
   strain_vec <- sample.int(n_strain, size = max.iter, replace = T, prob = beta) # pre-generate strains resulting from infection
   symptoms_vec <- sample(c("E", "A"), size = max.iter, replace = T, prob = c(psi, 1 - psi)) # pre-generate probs of developing symptoms
-  pres_vec <- sample.int(n_pres, size = max.iter, replace = T, prob = prop_pres) # pregenerate prescripton proportions
-  treat_success_vec <- runif(n = max.iter) # pre-generate probs of developing symptoms
+   treat_success_vec <- runif(n = max.iter) # pre-generate probs of developing symptoms
   # # can reduce number generated here if need be for comp time
   
   # create objects to record number of replacement infections vs new infections
@@ -353,18 +351,10 @@ sim_dynamic_sn <- function (N,
       infs[w, "T"] <- F # remove infection from treatment stage and set strain to 0
       rcure <- rcure - rho # decrease the overall rate of cure by rho
       
-      pres <- pres_vec[step]
       if(strain == 0) browser()
-      if(treat_success_vec[step] < efficacy[strain, pres]) { # treatment success
         strains[w] <- 0
         log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 5, 1, strain, w, repeat_infs[w])
-      } else { # treatment failure
-        Ninf[strain, "A"] <- Ninf[strain, "A"] + 1 # increase asymptomatics by 1 in correct strain
-        infs[w,  "A"] <- T #  asymptomatic = 1 in correct strain
-        rscreen <- rscreen + eta # increase screening rate by eta
-        rrec <- rrec + nualpha[strain] # increase recovery rate by nu * alpha
-        log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 5, 4, strain, w, repeat_infs[w])
-      } 
+      
       
     }
     rels.t[step] <- NRel # record total number of rels
