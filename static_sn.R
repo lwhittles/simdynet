@@ -1,9 +1,9 @@
 # case where lambda ~ Exp(1)
 
 
-source("general/project_colours.R")
-source("sn/figs/plot_dd_function.R")
-require(igraph)
+# source("general/project_colours.R")
+# source("sn/figs/plot_dd_function.R")
+# require(igraph)
 
 
 calculate_g <- function(x, gamma, k0, N, kmax = N - 1, mu = 1) {
