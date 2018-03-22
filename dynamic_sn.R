@@ -4,16 +4,16 @@ source("calc_dd.R")
 
 sim_dynamic_sn <- function (N, 
                             gamma, k0,  phi, 
-                            n_strain = 1,  n_infs = 0,
+                            n_infs = 0,
                             beta = 1, psi = 1,  sigma = 1, 
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
-                            t, max.iter, burn.in = t,
+                            t, max.iter = 1e6, burn.in = t,
                             record=FALSE, record_term = 1, record_lengths = FALSE) {
   
   start <- Sys.time ()
   
   inputs <- list(N = N, gamma = gamma, k0 = k0, phi = phi, 
-                 n_strain = n_strain,  n_infs = n_infs,
+                 n_infs = n_infs,
                  beta = beta, psi = psi, sigma = sigma, 
                  nu = nu, eta = eta, mu =  mu, rho = rho, n_vax = n_vax, vax_strat = vax_strat,
                  t = t, max.iter = max.iter, burn.in = burn.in,
@@ -29,18 +29,9 @@ sim_dynamic_sn <- function (N,
   kmax <- floor(kmax$minimum)
 
  
-  # n_infs is a vector of length n_strain
-  # burn.in is now in days not iterations
-  # infs is now a N x n_strain matrix of 0s and 1s
-  
-  
-  #input checks
-  if (n_strain != length(beta)) stop("number of strains and supplied betas do not match")
-  if (n_strain != length(n_infs)) stop("number of strains and supplied infs do not match")
- 
-  
 
-
+  # burn.in is in days not iterations
+  # infs is now a N vector of 0s and 1s
   
   time.window <- c(0, t)
   time <- time.window[1]
@@ -102,23 +93,15 @@ sim_dynamic_sn <- function (N,
   
   strains <- rep(0,N)
   
-  Ninf <- matrix(0, nrow = n_strain, ncol = n_stage,  dimnames = list(NULL, c("U", "E", "A", "T"))) # number of infs at start
-  Ninf0 <- Ninf
+  Ninf <- rep(0, n_stage)
+  names(Ninf) <- c("U", "E", "A", "T")
   
   
-  strain_vec <- sample.int(n_strain, size = max.iter, replace = T, prob = beta) # pre-generate strains resulting from infection
   symptoms_vec <- sample(c("E", "A"), size = max.iter, replace = T, prob = c(psi, 1 - psi)) # pre-generate probs of developing symptoms
-   treat_success_vec <- runif(n = max.iter) # pre-generate probs of developing symptoms
-  # # can reduce number generated here if need be for comp time
   
-  # create objects to record number of replacement infections vs new infections
+  new_inf_event <- 0  # record total infs
   
-  replacement_event <- matrix(0, nrow = n_strain, ncol = n_strain, 
-                               dimnames = list(paste0("from.", 1:n_strain), paste0("to.",  1:n_strain)))# record which strains replace each other
-  new_inf_event <- rep(0, n_strain)  # record which strains are causing new infections
-  
-   # infs.t <- array(data = 0, dim = c(n_strain, n_stage, max.iter), dimnames = list(NULL, c("U", "E", "A", "T"), NULL)) # storing number of infs with each strain over time
-  log_infs <- matrix(data = NA, nrow = max.iter, ncol = 9, dimnames = list(NULL, c("time", "c1", "c2", "strain", "p", "infector", "infector_ninf","infector_stage", "p_ninf"))) 
+  log_infs <- matrix(data = NA, nrow = max.iter, ncol = 8, dimnames = list(NULL, c("time", "c1", "c2", "p", "infector", "infector_ninf","infector_stage", "p_ninf"))) 
     # record c as (S=1, U=2, E=3, A=4, T=5)
   rinf <- 0 # set initial rate of infs = 0 (as implemented after burn-in)
   rsymp <- 0 # set initial rate of leaving incubation stage = 0 (as implemented after burn-in)
@@ -139,8 +122,8 @@ sim_dynamic_sn <- function (N,
       ranked_lambdas <- order(lambdas, decreasing = T)
       w <- ranked_lambdas[1:n_infs] # choose initial infections
       infs[w, "A"] <- T
-      Ninf[ ,"A"] <- n_infs # introduce infections
-      if (n_infs>0) strains[w] <- rep(1:n_strain, n_infs) # determine which strain infects each infectee
+      Ninf["A"] <- n_infs # introduce infections
+      if (n_infs > 0) strains[w] <- rep(1, n_infs) # record who has wildtype infection
       if (n_vax > 0) {
         if(vax_strat =="target") v <- ranked_lambdas[n_infs + 1:n_vax]
         else if (vax_strat == "random") v <- sample(x = ranked_lambdas[-(1:n_infs)], size = n_vax)
@@ -218,110 +201,87 @@ sim_dynamic_sn <- function (N,
     
     
     if (e=='rinf') {
-      strain <- strain_vec[step]
-      if(strain == 0) browser()
-      # infection with strain 
-      # print(paste0("rinf = ", rinf ))
+
       w <- sample.int(NRel, 1) # choose one couple
+      w_inf_status <- strains[rels[w, c("p1", "p2")]] # find their infection status
       
-      w_inf_status <- strains[rels[w, c("p1", "p2")]] 
-      
-      if( !any(w_inf_status == strain)) next # neither are infected with strain
-      if( any(w_inf_status == 99)) next # vaccinated
+      if( !any(w_inf_status == 1)) next # neither are infected with strain
+      if( any(w_inf_status == 99)) next # one is vaccinated
       if( all(w_inf_status > 0 )) next # both are infected
-      if( any(infs[rels[w, c("p1", "p2")],"T"])) next # in treatment so not infectious
+      if( any(infs[rels[w, c("p1", "p2")], "T"])) next # in treatment so not infectious
       
-      infectee <- rels[w, which(w_inf_status != strain)]
-      infector <- rels[w, which(w_inf_status == strain)]
-      if(length(strains[infectee]) ==0) browser()
-      
-      # if(strains[infectee] > 0) { # if infectee partner is currently infected with other strain
-      #   old_strain <- strains[infectee] # calculate which strain prev infection was
-      #   Ninf[old_strain, ] <- Ninf[old_strain, ] - infs[infectee, ] # decrease total number of infections with prev strain
-      #   infs[infectee, ] <- F # remove previous infection
-      #   replacement_event[old_strain, strain] <-  replacement_event[old_strain, strain] + 1 # increase ticker
-      # } else { # if infectee was not previously infected with another
-      #   rsymp <- rsymp + sigma # increase overall rate of leaving incubation stage
-      #   new_inf_event[strain] <- new_inf_event[strain] + 1 # increase ticker
-      # }
-      
+      infectee <- rels[w, which(w_inf_status != 1)]
+      infector <- rels[w, which(w_inf_status == 1)]
+      if(length(strains[infectee]) == 0) browser()
+         
       rsymp <- rsymp + sigma # increase overall rate of leaving incubation stage
-      new_inf_event[strain] <- new_inf_event[strain] + 1 # increase ticker
+      new_inf_event <- new_inf_event + 1 # increase ticker
       infs[infectee, "U"] <- T # record infected status for infectee
-      strains[infectee] <- strain
-      Ninf[strain, "U"] <- Ninf[strain, "U"] + 1 # increase total infs  with strain by 1
+      strains[infectee] <- 1
+      Ninf[ "U"] <- Ninf[ "U"] + 1 # increase total infs 1
       repeat_infs[infectee] <- repeat_infs[infectee] + 1
-      log_infs[step, c("time", "c1", "c2", "strain", "p", "infector", "infector_ninf","infector_stage", "p_ninf")] <- c(time, 1, 2, strain, infectee, infector, repeat_infs[infector], which(infs[infector, ])+1, repeat_infs[infectee])
+      log_infs[step, c("time", "c1", "c2", "p", "infector", "infector_ninf","infector_stage", "p_ninf")] <- c(time, 1, 2, infectee, infector, repeat_infs[infector], which(infs[infector, ])+1, repeat_infs[infectee])
     }      
     
     else if (e == 'rsymp') {
       # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      if(sum(Ninf[,"U"]) == 1) w <- N_vec[infs[,"U"]]
+      if(Ninf["U"] == 1) w <- N_vec[infs[,"U"]]
       else w <- sample(x = N_vec[infs[,"U"]], size = 1) # equal probability of leaving incubation stage for all new infections
       
-      # if the above line is slow can think re-parametrise as per Rels
-      strain <- strains[w]
-      if(strain == 0) browser()
-      
       infs[w, c("U", symptoms_vec[step])] <- c(F, T) # add infection to either symptomatic or asymptomatic compartment
-      Ninf[strain, c("U", symptoms_vec[step])] <- Ninf[strain, c("U", symptoms_vec[step])] + c(-1, 1) # remove infection from U in correct strain
+      Ninf[ c("U", symptoms_vec[step])] <- Ninf[ c("U", symptoms_vec[step])] + c(-1, 1) # remove infection from U 
       
       rsymp <- rsymp - sigma # decrease overall rate of leaving incubation stage
       
       if (symptoms_vec[step] == "E") {
         rtreat <- rtreat + mu # if develop symptoms, increase treatment rate by mu
-        log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 2, 3, strain, w, repeat_infs[w])
+        log_infs[step, c("time", "c1", "c2",  "p", "p_ninf")] <- c(time, 2, 3,  w, repeat_infs[w])
       }
       else if (symptoms_vec[step] == "A") { # if remains asymptomatic
         rscreen <- rscreen + eta # increase screening rate by eta
         rrec <- rrec + nu # increase recovery rate by nu 
-        log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 2, 4, strain, w, repeat_infs[w])
+        log_infs[step, c("time", "c1", "c2",  "p", "p_ninf")] <- c(time, 2, 4,  w, repeat_infs[w])
       }
     }
     
     else if (e == 'rtreat') {
       # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
       if(length(N_vec[infs[,"E"]]) ==0) browser()
-      if(sum(Ninf[,"E"]) == 1) w <- N_vec[infs[,"E"]]
+      if(Ninf["E"] == 1) w <- N_vec[infs[,"E"]]
       else w <- sample(x = N_vec[infs[,"E"]], size = 1) # equal probability of treatment seeking for all symptomatic carriers
-      
-      strain <- strains[w]
-      if(strain == 0) browser()
+
       # if the above line is slow can think re-parametrise as per Rels
       # print(paste0("infs = ", colSums(infs[,1,])))
       # print(paste0("NInf = ", Ninf))
       
       infs[w, c("E", "T")] <- c(F, T) # remove infection from symptomatic stage, add infection to treatment stage
-      Ninf[strain, c("E", "T")] <- Ninf[strain, c("E", "T")] + c(-1, 1) # remove infection from symptomatic stage, add infection to treatment stage
+      Ninf[c("E", "T")] <- Ninf[c("E", "T")] + c(-1, 1) # remove infection from symptomatic stage, add infection to treatment stage
       
       rtreat <- rtreat - mu # decrease overall rate of seeking treatment by mu
       rcure <- rcure + rho # increase the overall rate of cure by rho
-      log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf") ] <- c(time, 3, 5, strain, w, repeat_infs[w])
+      log_infs[step, c("time", "c1", "c2",  "p", "p_ninf") ] <- c(time, 3, 5,  w, repeat_infs[w])
     }
     
     else if (e == 'rscreen') {
       # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      if(sum(Ninf[,"A"]) == 1) w <- N_vec[infs[,"A"]]
+      if(Ninf["A"] == 1) w <- N_vec[infs[,"A"]]
       else w <- sample(x = N_vec[infs[,"A"]], size = 1) # equal probability of being screened for all asymptomatic carriers
-      strain <- strains[w]
-      if(strain == 0) browser()
+
       infs[w, c("A", "T")] <- c(F, T) # remove infection from asymptomatic stage, add infection to treatment stage
-      Ninf[strain, c("A", "T")] <- Ninf[strain, c("A", "T")] + c(-1, 1) # remove infection from asymptomatic stage, add infection to treatment stage
+      Ninf[c("A", "T")] <- Ninf[ c("A", "T")] + c(-1, 1) # remove infection from asymptomatic stage, add infection to treatment stage
       
       rrec <- rrec - nu # decrease overall rate of recovery by nu 
       rscreen <- rscreen - eta # decrease screening rate by eta
       rcure <- rcure + rho # increase the overall rate of cure by rho
-      log_infs[step, c("time", "c1", "c2", "strain", "p","p_ninf")] <- c(time, 4, 5, strain, w, repeat_infs[w])
+      log_infs[step, c("time", "c1", "c2", "p","p_ninf")] <- c(time, 4, 5,  w, repeat_infs[w])
     }
     
     else if (e == 'rrec') {
       # print(paste0("rrec = ", rrec , " vs. ", sum(infs)*rho))
-      strain <- sample.int(n = n_strain, size = 1, prob = Ninf[, "A"] * nu) # sample which strain with prob A_s * nu
-      if(Ninf[strain, "A"] == 1) w <- N_vec[strains == strain & infs[, "A"]]
-      else w <- sample(N_vec[strains == strain & infs[, "A"]], 1) # equal probability of recovery for all asymptomatic carriers with that strain
-      
-      if(strain == 0) browser()
-      Ninf[strain, "A"] <- Ninf[strain, "A"] - 1 # decrease total infs by 1 in correct strain
+      if(Ninf["A"] == 1) w <- N_vec[strains == 1 & infs[, "A"]]
+      else w <- sample(N_vec[strains == 1 & infs[, "A"]], 1) # equal probability of recovery for all asymptomatic carriers with that strain
+
+      Ninf[ "A"] <- Ninf[ "A"] - 1 # decrease total infs by 1 
       infs[w, "A"] <- F # remove infection from asymptomatic stage and set strain to 0
       strains[w] <- 0
       
@@ -329,7 +289,7 @@ sim_dynamic_sn <- function (N,
       
       rrec <- rrec - nu # decrease overall rate of recovery by nu
       rscreen <- rscreen - eta # also decrease screening rate by eta
-      log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 4, 1, strain, w, repeat_infs[w])
+      log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 4, 1, w, repeat_infs[w])
     }
     
     else if (e == 'rcure') {
@@ -337,54 +297,22 @@ sim_dynamic_sn <- function (N,
       # probw <- rowSums(infs[, , "T", drop = F])
       # if(sum(probw) < 1) browser()
       # print(sum(probw))
-      if(sum(Ninf[,"T"]) == 1) w <- N_vec[infs[,"T"]]
+      if(Ninf["T"] == 1) w <- N_vec[infs[,"T"]]
       else w <- sample(x = N_vec[infs[,"T"]], size = 1) # equal probability of cure for all treated infections
-      strain <- strains[w]
-      if(strain == 0) browser()
+
       
       
-      Ninf[strain, "T"] <- Ninf[strain, "T"] - 1 # decrease total infs by 1 in correct strain
+      Ninf["T"] <- Ninf[ "T"] - 1 # decrease total infs by 1
       infs[w, "T"] <- F # remove infection from treatment stage and set strain to 0
       rcure <- rcure - rho # decrease the overall rate of cure by rho
-      
-      if(strain == 0) browser()
-        strains[w] <- 0
-        log_infs[step, c("time", "c1", "c2", "strain", "p", "p_ninf")] <- c(time, 5, 1, strain, w, repeat_infs[w])
+      strains[w] <- 0
+      log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 5, 1, w, repeat_infs[w])
       
       
     }
     rels.t[step] <- NRel # record total number of rels
-     # infs.t[, , step] <- Ninf # record number of infs of each strain
     if(any(Ninf < 0)) browser() # check
-    
-    # speed-up to remove extinct strains
-    # if (time > burn.in) { # after infections are introduced
-    #   if (any(colSums(infs.t[step - c(1,0),, drop=F]) == 1)) { # if a strain has just gone extinct
-    #     beta[rowSums(Ninf) == 0] <- 0 # remove strain from circulation to speed up algorithm
-    #     rinf <- NRel * sum(beta)  # recalculate rinf
-    #     if (rinf > 0) strain_vec[(step+1):max.iter] <- sample.int(n_strain, size = max.iter - step, replace = T, prob = beta) # remove strain from future calcs
-    #     # as if all strains have died out can just continue without infection
-    #   }
-    # }
-    # 
-    # records the degree distribution of the network over specified term
-    #   if (times[step] > t - record_term) {
-    #     if (times[step - 1] < t - record_term) {
-    #       tab <- table(rels[, 1:2])
-    #       degree_vec[as.numeric(names(tab))] <- tab
-    #       rec_rels <- matrix(data = NA, nrow = max.iter, ncol = 2, dimnames = list(NULL, c("p1", "p2")))
-    #       rec_rels[1:NRel, ] <- rels[1:NRel, c("p1", "p2")] # partnerships in existence
-    #       NRel_rec <- NRel
-    #     } 
-    #     else if (times[step - 1] > t - record_term) {
-    #       if( rels.t[step] > rels.t[step - 1]) { # only counts rels that have actually been added
-    #         degree_vec[w] <- degree_vec[w] + 1
-    #         NRel_rec <- NRel_rec + 1 # only ever increase at this point
-    #         rec_rels[NRel_rec, ] <- w # add partners
-    #     }
-    #   }
-    # }
-     
+   
     step <- step + 1
   }
   
@@ -434,7 +362,6 @@ sim_dynamic_sn <- function (N,
              vax_check = intersect(v, log_infs$p),
              # infs.t = infs.t, 
              dd = dd$dd, prop0 = dd$prop0,
-             inf_event = rbind(replacement_event, "new" = new_inf_event), 
              comp_time = Sys.time () - start)
   
   
