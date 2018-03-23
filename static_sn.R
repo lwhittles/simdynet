@@ -1,15 +1,15 @@
-require(igraph)
+source("calc_dd.R")
 source("calc_g.R")
 
 sim_static_sn <- function(gamma, k0,  N=1e4, phi = 1e4) {
   inputs <- list(gamma = gamma, k0 = k0, N = N,  phi = phi)
-  l  <- rexp(n = N, rate = mu) # draw N lambdas from Exp(1) dist
+  l  <- rexp(n = N, rate = 1) # draw N lambdas from Exp(1) dist
   
   kmax <- optimise(f = function(z) { #optimise kmax
     abs(calculate_g(x = Inf, gamma = gamma, k0 = k0, N = N, kmax = z)$g - 1) 
     }, 
     interval = c(1, N))
-  kmax <- floor(kmax_opt$minimum) 
+  kmax <- floor(kmax$minimum) 
   
   gs <- calculate_g(x = l, gamma = gamma, k0 = k0, N = N, kmax = kmax, mu = 1) # calculate g(lamda)
   gl <- gs$g 
@@ -23,15 +23,15 @@ sim_static_sn <- function(gamma, k0,  N=1e4, phi = 1e4) {
   
   M <- matrix(0, nrow = N, ncol = N) # matrix of partnerships (if U < Q)
   M[U < Q] <- 1
+
   
-  g <- graph_from_adjacency_matrix(M, mode = "undirected")
-  dd <- degree_distribution(g)
-  prop0 <- dd[1]
-  dd <- dd[-1]/sum(dd[-1])
+  degree_vec <- colSums(M) + rowSums(M)
+  dd <- calc_dd(degree_vec = degree_vec, N = N)
   
-  const <- (1-gamma) / ((kmax * (1 - prop0)) ^ (1-gamma) - k0 ^ (1-gamma))
+
+  const <- (1-gamma) / ((kmax * (1 - dd$prop0)) ^ (1-gamma) - k0 ^ (1-gamma))
   
-  sn <- list(inputs = inputs, res = M, dd = dd, prop0 = prop0, const = const, kmax = kmax)
+  sn <- list(inputs = inputs, res = M, dd = dd$dd, prop0 = dd$prop0, const = const, kmax = kmax)
   
   return(sn)
 }
