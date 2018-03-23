@@ -204,9 +204,9 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     log_infs$p_full <- paste0(log_infs$p, "_", log_infs$p_ninf)
     }
   
-  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
+  sn <- list(inputs = inputs, kmax = sn$kmax, const = sn$const, 
              log_infs = log_infs,
-             dd = dd$dd, prop0 = dd$prop0,
+             dd = sn$dd, prop0 = sn$prop0,
              comp_time = Sys.time () - start)
   
   return(sn)
