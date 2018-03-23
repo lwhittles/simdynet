@@ -298,11 +298,7 @@ sim_dynamic_sn <- function (N,
   print(Sys.time () - start)
   
   # remove unused storage
-  Nstep <- step - 1
-  times <- c(0,times[1:Nstep])
   log_infs <- log_infs[!is.na(log_infs[,1]), ,drop=F]
-  rels.t <- c(NRel0, rels.t[1:Nstep])
-  
   log_infs  <- as.data.frame(log_infs)
 
   if( nrow(log_infs) > 0) {
@@ -311,60 +307,33 @@ sim_dynamic_sn <- function (N,
     log_infs$infector_stage <- factor(x = log_infs$infector_stage, levels = 2:4, labels = c( "U", "E", "A"), exclude = NA)
     log_infs$infector_full <- paste0(log_infs$infector, "_", log_infs$infector_ninf)
     log_infs$p_full <- paste0(log_infs$p, "_", log_infs$p_ninf)
-    
     }
   
-  
-  
+
 
   dd <- calc_dd(degree_vec, N)
   const <- (1-gamma) / ((kmax * (1 - dd$prop0)) ^ (1-gamma) - k0 ^ (1-gamma))
   
-
-  
-  deg_curr <- rep(0, N)
-  deg_curr_table <- table(rels[, c("p1", "p2")])
-  deg_curr[as.numeric(names(deg_curr_table))] <- as.numeric(deg_curr_table)
-  prop0_curr <- sum(deg_curr == 0)/N
-  
+  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
+             log_infs = log_infs,
+             dd = dd$dd, prop0 = dd$prop0,
+             comp_time = Sys.time () - start)
   
   if(record_lengths) {
     length_mat <- length_mat[1:total_rel, ] # remove unused storage
     length_mat <- cbind(length_mat, "length" = length_mat[,"end"] - length_mat[,"start"])
+    sn <- c(sn, record_lengths)
   }
   
-  
-  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
-             log_infs = log_infs,
-             vax_check = intersect(v, log_infs$p),
-             # infs.t = infs.t, 
-             dd = dd$dd, prop0 = dd$prop0,
-             comp_time = Sys.time () - start)
-  
-  
-  
   if(record) {
+    deg_curr <- rep(0, N)
+    deg_curr_table <- table(rels[, c("p1", "p2")])
+    deg_curr[as.numeric(names(deg_curr_table))] <- as.numeric(deg_curr_table)
+    prop0_curr <- sum(deg_curr == 0)/N
     net_out <- list(degree = degree_vec, 
                      degree_curr = deg_curr, prop0_curr = prop0_curr)
     sn <- c(sn, net_out)
   }
-  
-  sn$dists <- NA
-  sn$R0 <- rep(0,3)
-  
-  if(sum(new_inf_event)>0) {
-    sn$R0 <- rep(0,3)
-  }
-
-  if (sum(Ninf) == 0 ) {
-    ext_day <- floor(max(log_infs$time*365))
-    if (ext_day < 365) ext <- TRUE
-  }
-  
-  sn$ext = ext
-  sn$ext_day = ext_day
-  sn$total_treated <- sum(((log_infs$c1==5) | (log_infs$c1 == "T")) & log_infs$time <1 )
-  
   
   return(sn)
   

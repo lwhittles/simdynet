@@ -16,7 +16,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
                  nu = nu, eta = eta, mu =  mu, rho = rho, 
                  t = t, max.iter = max.iter)
   
-  time.window <- c(burn.in, t)
+  time.window <- c(0, t)
   time <- time.window[1]
   tau <- 0 # initialise
   times <- rep(0, max.iter) # storing times at which events happen
@@ -26,6 +26,8 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     sn$rec_rels <- which(sn$res == 1, arr.ind = T)
     colnames(sn$rec_rels) <- c("p1", "p2")
   }
+  
+  lambdas <- sn$lambdas
   
   rels <- sn$rec_rels[, c("p1", "p2")]
   dd <- sn$dd
@@ -190,9 +192,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
   print(Sys.time() - start)
   
   # remove unused storage
-  Nstep <- step - 1
-  times <- c(0,times[1:Nstep])
-  log_infs <- log_infs[!is.na(log_infs[,1]), , drop=F]
+  log_infs <- log_infs[!is.na(log_infs[, 1]), , drop=F]
   
   
   log_infs  <- as.data.frame(log_infs)
@@ -203,22 +203,11 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     log_infs$infector_full <- paste0(log_infs$infector, "_", log_infs$infector_ninf)
     log_infs$p_full <- paste0(log_infs$p, "_", log_infs$p_ninf)
     }
-  sn <- list(inputs = inputs, const = const, 
-             times = times, 
+  
+  sn <- list(inputs = inputs,  kmax = kmax, const = const, 
              log_infs = log_infs,
-             degree = rowSums(sn$res) + colSums(sn$res),
-             dd = dd, prop0 = prop0,
+             dd = dd$dd, prop0 = dd$prop0,
              comp_time = Sys.time () - start)
-
-  sn$dists <- NULL
-  sn$R0 <- rep(0,3)
-  if (sum(Ninf) == 0 ) {
-    ext_day <- floor(max(log_infs$time*365))
-    if (ext_day < 365) ext <- TRUE
-  }
-  sn$ext = ext
-  sn$ext_day = ext_day
-  sn$total_treated <-  sum(((log_infs$c1==5) | (log_infs$c1 == "T")) & log_infs$time <1 )
-
+  
   return(sn)
 }
