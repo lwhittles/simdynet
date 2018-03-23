@@ -1,4 +1,4 @@
-source("static_sn.R")
+source("calc_g.R")
 source("calc_dd.R")
 
 
@@ -53,7 +53,7 @@ sim_dynamic_sn <- function (N,
   gs <- calculate_g(x = lambdas, gamma = gamma, k0 = k0, kmax = kmax, N = N) # calculate g(lamda)
   g_fac <- 1 + 1 / phi
 
-  gl <- gs$g * sqrt(g_fac) # calculations are vectotised for speed
+  gl <- gs$g * sqrt(g_fac) # calculations are vectorised for speed
   const <- gs$c
   
   
