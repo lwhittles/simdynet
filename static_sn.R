@@ -31,7 +31,7 @@ sim_static_sn <- function(gamma, k0,  N=1e4, phi = 1e4) {
 
   const <- (1-gamma) / ((kmax * (1 - dd$prop0)) ^ (1-gamma) - k0 ^ (1-gamma))
   
-  sn <- list(inputs = inputs, res = M, dd = dd$dd, prop0 = dd$prop0, const = const, kmax = kmax)
+  sn <- list(inputs = inputs, res = M, dd = dd$dd, prop0 = dd$prop0, const = const, kmax = kmax, lambdas = l)
   
   return(sn)
 }
