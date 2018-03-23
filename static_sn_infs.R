@@ -68,15 +68,11 @@ sim_outbreak_static_sn <- function(N, sn = 0,
   rcure <- 0 # set initial rate of cure (or failure) = 0 (as implemented after burn-in)
   
   step <- 1
-  ext <- FALSE
-  ext_day <- t*365
   
   while(time < time.window[2] & step <= max.iter){
     if (sum(Ninf)==0) break
 
     prob <- c(rinf, rsymp, rtreat, rrec, rscreen, rcure) # now a vector of length 6
-
-     if(any(prob < 0)) prob <- pmax(0, prob)
    
     e <- sample(c('rinf', 'rsymp', 'rtreat', 'rrec', 'rscreen', 'rcure'), size = 1, prob = prob)
     
@@ -85,8 +81,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     time <- time + tau # update time
     times[step] <- time    #store time
     
-    
-    if (e=='rinf') {
+    if (e=='rinf') { #infection event
       
       w <- sample.int(NRel, 1) # choose one couple
       w_inf_status <- strains[rels[w, c("p1", "p2")]] # find their infection statuses
@@ -98,7 +93,6 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       
       infectee <- rels[w, which(w_inf_status != 1)]
       infector <- rels[w, which(w_inf_status == 1)]
-      if(length(strains[infectee]) == 0) browser()
       
       rsymp <- rsymp + sigma # increase overall rate of leaving incubation stage
       new_inf_event <- new_inf_event + 1 # increase ticker
@@ -109,9 +103,9 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       log_infs[step, c("time", "c1", "c2", "p", "infector", "infector_ninf","infector_stage", "p_ninf")] <- c(time, 1, 2, infectee, infector, repeat_infs[infector], which(infs[infector, ])+1, repeat_infs[infectee])
     }      
     
-    else if (e == 'rsymp') {
+    else if (e == 'rsymp') { #infection leaves incubation stage
       
-      if(Ninf["U"] == 1) w <- N_vec[infs[,"U"]]
+      if(Ninf["U"] == 1) w <- N_vec[infs[,"U"]] # choose one incubating individual
       else w <- sample(x = N_vec[infs[,"U"]], size = 1) # equal probability of leaving incubation stage for all new infections
       
       infs[w, c("U", symptoms_vec[step])] <- c(F, T) # add infection to either symptomatic or asymptomatic compartment
@@ -119,20 +113,22 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       
       rsymp <- rsymp - sigma # decrease overall rate of leaving incubation stage
       
-      if (symptoms_vec[step] == "E") {
-        rtreat <- rtreat + mu # if develop symptoms, increase treatment rate by mu
+      if (symptoms_vec[step] == "E") { # if symptoms develop
+        rtreat <- rtreat + mu # increase treatment rate by mu
+        # record event
         log_infs[step, c("time", "c1", "c2",  "p", "p_ninf")] <- c(time, 2, 3,  w, repeat_infs[w])
       }
-      else if (symptoms_vec[step] == "A") { # if remains asymptomatic
+      else if (symptoms_vec[step] == "A") { # if infection is asymptomatic
         rscreen <- rscreen + eta # increase screening rate by eta
         rrec <- rrec + nu # increase recovery rate by nu 
+        # record event
         log_infs[step, c("time", "c1", "c2",  "p", "p_ninf")] <- c(time, 2, 4,  w, repeat_infs[w])
       }
     }
     
-    else if (e == 'rtreat') {
+    else if (e == 'rtreat') { # symptomatic individual seeks treatment
       
-      if(Ninf["E"] == 1) w <- N_vec[infs[,"E"]]
+      if(Ninf["E"] == 1) w <- N_vec[infs[,"E"]]  # choose one symptomatic individual
       else w <- sample(x = N_vec[infs[,"E"]], size = 1) # equal probability of treatment seeking for all symptomatic carriers
       
       infs[w, c("E", "T")] <- c(F, T) # remove infection from symptomatic stage, add infection to treatment stage
@@ -140,13 +136,14 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       
       rtreat <- rtreat - mu # decrease overall rate of seeking treatment by mu
       rcure <- rcure + rho # increase the overall rate of cure by rho
+      # record event
       log_infs[step, c("time", "c1", "c2",  "p", "p_ninf") ] <- c(time, 3, 5,  w, repeat_infs[w])
     }
     
-    else if (e == 'rscreen') {
+    else if (e == 'rscreen') { # asymptomatic individual is screened
       
-      if(Ninf["A"] == 1) w <- N_vec[infs[,"A"]]
-      else w <- sample(x = N_vec[infs[,"A"]], size = 1) # equal probability of being screened for all asymptomatic carriers
+      if(Ninf["A"] == 1) w <- N_vec[infs[, "A"]] # choose one asymptomatic individual
+      else w <- sample(x = N_vec[infs[, "A"]], size = 1) # equal probability of being screened for all asymptomatic carriers
       
       infs[w, c("A", "T")] <- c(F, T) # remove infection from asymptomatic stage, add infection to treatment stage
       Ninf[c("A", "T")] <- Ninf[ c("A", "T")] + c(-1, 1) # remove infection from asymptomatic stage, add infection to treatment stage
@@ -154,12 +151,13 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       rrec <- rrec - nu # decrease overall rate of recovery by nu 
       rscreen <- rscreen - eta # decrease screening rate by eta
       rcure <- rcure + rho # increase the overall rate of cure by rho
-      log_infs[step, c("time", "c1", "c2", "p","p_ninf")] <- c(time, 4, 5,  w, repeat_infs[w])
+      # record event
+      log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 4, 5,  w, repeat_infs[w])
     }
     
-    else if (e == 'rrec') {
+    else if (e == 'rrec') { # asymptomatic individual recovers
       
-      if(Ninf["A"] == 1) w <- N_vec[strains == 1 & infs[, "A"]]
+      if(Ninf["A"] == 1) w <- N_vec[strains == 1 & infs[, "A"]] # choose one asymptomatic individual
       else w <- sample(N_vec[strains == 1 & infs[, "A"]], 1) # equal probability of recovery for all asymptomatic carriers with that strain
       
       Ninf[ "A"] <- Ninf[ "A"] - 1 # decrease total infs by 1 
@@ -168,24 +166,23 @@ sim_outbreak_static_sn <- function(N, sn = 0,
       
       rrec <- rrec - nu # decrease overall rate of recovery by nu
       rscreen <- rscreen - eta # also decrease screening rate by eta
+      # record event
       log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 4, 1, w, repeat_infs[w])
     }
     
-    else if (e == 'rcure') {
+    else if (e == 'rcure') { # treated individual is cured
       
-      if(Ninf["T"] == 1) w <- N_vec[infs[,"T"]]
-      else w <- sample(x = N_vec[infs[,"T"]], size = 1) # equal probability of cure for all treated infections
+      if(Ninf["T"] == 1) w <- N_vec[infs[, "T"]] # choose one individual in treatment 
+      else w <- sample(x = N_vec[infs[, "T"]], size = 1) # equal probability of cure for all treated infections
       
       Ninf["T"] <- Ninf[ "T"] - 1 # decrease total infs by 1
       infs[w, "T"] <- F # remove infection from treatment stage and set strain to 0
       rcure <- rcure - rho # decrease the overall rate of cure by rho
       strains[w] <- 0
+      # record event
       log_infs[step, c("time", "c1", "c2", "p", "p_ninf")] <- c(time, 5, 1, w, repeat_infs[w])
-      
-      
     }
-
-    if(any(Ninf < 0)) browser() # check
+    
     step <- step + 1
   }
   
