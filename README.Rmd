@@ -1,0 +1,48 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figures/README-"
+)
+set.seed(0)
+```
+
+# simplasex
+
+The goal of simplasex is to simulate realistic dynamic sexual networks. 
+
+## Installation
+
+You can install simplasex from github with:
+
+```{r gh-installation, eval = FALSE}
+devtools::install_github("lwhittles/simplasex")
+```
+
+The package can then be loaded using:
+```{r}
+library(simplasex)
+```
+
+## Example
+
+This is a basic example of usage. 
+```{r}
+test_og <- sim_dynamic_sn(N = 1e3, gamma = 1.8, k0 = 0.5, phi = 1e4,
+                          t = 1+1/365, max.iter = 1e6)
+```
+
+## More information and getting help
+
+For more detailed examples of how to use simplasex, see the vignettes [here](https://github.com/xavierdidelot/simplasex/tree/master/vignettes).
+See also the help included in the package using the R command
+`help(package='simplasex')`. 
+
+If you have any problem or question please create an issue [here](https://github.com/lwhittles/simplasex/issues) 
+or get in touch by emailing `l.whittles14@imperial.ac.uk` or `xavier.didelot@gmail.com`

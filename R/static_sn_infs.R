@@ -1,5 +1,5 @@
-source("static_sn.R")
-
+#' Simulation of outbreak in static network
+#' @export
 sim_outbreak_static_sn <- function(N, sn = 0, 
                                    gamma, k0, phi,
                                    n_infs = 0, 

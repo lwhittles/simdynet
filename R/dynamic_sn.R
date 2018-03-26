@@ -1,7 +1,5 @@
-source("calc_g.R")
-source("calc_dd.R")
-
-
+#' Simulation of dynamic network
+#' @export
 sim_dynamic_sn <- function (N, 
                             gamma, k0,  phi, 
                             n_infs = 0,
