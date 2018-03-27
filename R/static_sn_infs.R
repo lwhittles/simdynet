@@ -23,10 +23,10 @@ sim_outbreak_static_sn <- function(N=1e4,
   
   if(!is.list(sn)) {
     sn <- sim_static_sn(gamma = gamma, k0 = k0, N = N, phi = phi)
-    sn$rec_rels <- which(sn$res == 1, arr.ind = T)
-    colnames(sn$rec_rels) <- c("p1", "p2")
   }
-  
+  sn$rec_rels <- which(sn$res == 1, arr.ind = T)
+  colnames(sn$rec_rels) <- c("p1", "p2")
+
   lambdas <- sn$lambdas
   
   rels <- sn$rec_rels[, c("p1", "p2")]

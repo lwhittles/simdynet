@@ -18,7 +18,7 @@ opts_chunk$set(fig.width=5,fig.height=5,out.width="4in",out.height="4in",fig.ali
 
 \maketitle
 
-\section*{Introduction}
+\section{Introduction}
 
 The R package simplasex provides functions to simulate realistic sexual networks.
 If you have not already done so, you can install simplasex using the following R command:
@@ -37,36 +37,78 @@ Finally, if you want to reproduce exactly the same results as the ones shown in 
 set.seed(0)
 @
 
-\section*{Static network simulation}
+Throughout this vignette we use a population of size 1000 which is too small to be realistic in most settings, but this is useful to make execution of commands fast for illustration purposes.
+
+\section{Static network simulation}
+
+We can create a static snapshot of a sexual network over a year using:
 
 <<>>=
 s <- sim_static_sn(N = 1000, gamma = 1.8)
-suppressWarnings(plot(s$dd,xlab = '',
-    ylab = 'Degree distribution',log = 'xy'))
 @
 
-\section*{Simulation of outbreak in static network}
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+\section{Simulation of outbreak in static network}
+
+Simulation of outbreaks on static sexual networks is not recommended as it is 
+unrealistic of the way disease and network evolve on the same time scale.
+This facility is provided only for comparison with the dynamic method (cf below).
+To simulate an outbreak on the static network generated in the previous
+section, we can use:
+
 <<>>=
-s <- sim_outbreak_static_sn(N=1000, gamma = 1.8)
-suppressWarnings(plot(s$dd,xlab = '',
-    ylab = 'Degree distribution',log = 'xy'))
-nrow(s$log_infs)
+s <- sim_outbreak_static_sn(sn = s)
 @
 
-\section*{Dynamic network simulation}
+Or alternatively we can simulate both the static network and the outbreak using a single command:
+
+<<>>=
+s <- sim_outbreak_static_sn(N = 1000, gamma = 1.8)
+@
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+Histogram of infection times:
+<<>>=
+hist(s$log_infs$time,xlab='Time',ylab='Infections',breaks = 20,main='')
+@
+
+\section{Dynamic network simulation}
+
+We can simulate a dynamic network using:
 
 <<>>=
 s <- sim_dynamic_sn(N = 1000, gamma = 1.8)
-suppressWarnings(plot(s$dd,xlab = '',
-    ylab = 'Degree distribution',log = 'xy'))
 @
 
-\section*{Simulation of outbreak in dynamic network}
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+\section{Simulation of outbreak in dynamic network}
+
+We can simulate a dynamic network and an outbreak simultaneously using:
 
 <<>>=
-s <- sim_dynamic_sn(N = 1000, gamma = 1.8, n_infs = 1,beta=1000)
-suppressWarnings(plot(s$dd,xlab = '',
-    ylab = 'Degree distribution',log = 'xy'))
-nrow(s$log_infs)
+s <- sim_dynamic_sn(N = 1000, gamma = 1.8, n_infs = 1,beta=2000)
 @
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+Histogram of infection times:
+<<>>=
+hist(s$log_infs$time,xlab='Time',ylab='Infections',breaks = 20, main='')
+@
+
 \end{document}
