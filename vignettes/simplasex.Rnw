@@ -1,0 +1,72 @@
+\documentclass[a4paper]{article}
+
+%\VignetteIndexEntry{UsingSimplasex}
+%\VignetteEngine{knitr::knitr}
+
+\usepackage{geometry}
+\geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\title{Tutorial introducing the R package simplasex}
+\author{Lilith Whittles and Xavier Didelot}
+\begin{document}
+<<include=FALSE>>=
+library(knitr)
+temppath <- tempdir()
+opts_chunk$set(fig.path = temppath)
+opts_chunk$set(fig.width=5,fig.height=5,out.width="4in",out.height="4in",fig.align = "center")
+@
+
+\maketitle
+
+\section*{Introduction}
+
+The R package simplasex provides functions to simulate realistic sexual networks.
+If you have not already done so, you can install simplasex using the following R command:
+
+<<eval=FALSE>>=
+devtools::install_github('lwhittles/simplasex')
+@
+
+You should then be able to load simplasex using:
+<<>>=
+library('simplasex')
+@
+
+Finally, if you want to reproduce exactly the same results as the ones shown in this tutorial, you should set the seed of your random number generator to the same as ours:
+<<>>=
+set.seed(0)
+@
+
+\section*{Static network simulation}
+
+<<>>=
+s <- sim_static_sn(N = 1000, gamma = 1.8)
+suppressWarnings(plot(s$dd,xlab = '',
+    ylab = 'Degree distribution',log = 'xy'))
+@
+
+\section*{Simulation of outbreak in static network}
+<<>>=
+s <- sim_outbreak_static_sn(N=1000, gamma = 1.8)
+suppressWarnings(plot(s$dd,xlab = '',
+    ylab = 'Degree distribution',log = 'xy'))
+nrow(s$log_infs)
+@
+
+\section*{Dynamic network simulation}
+
+<<>>=
+s <- sim_dynamic_sn(N = 1000, gamma = 1.8)
+suppressWarnings(plot(s$dd,xlab = '',
+    ylab = 'Degree distribution',log = 'xy'))
+@
+
+\section*{Simulation of outbreak in dynamic network}
+
+<<>>=
+s <- sim_dynamic_sn(N = 1000, gamma = 1.8, n_infs = 1,beta=1000)
+suppressWarnings(plot(s$dd,xlab = '',
+    ylab = 'Degree distribution',log = 'xy'))
+nrow(s$log_infs)
+@
+\end{document}

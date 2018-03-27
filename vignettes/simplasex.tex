@@ -1,0 +1,184 @@
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+%\VignetteIndexEntry{UsingSimplasex}
+%\VignetteEngine{knitr::knitr}
+
+\usepackage{geometry}
+\geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\title{Tutorial introducing the R package simplasex}
+\author{Lilith Whittles and Xavier Didelot}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\maketitle
+
+\section*{Introduction}
+
+The R package simplasex provides functions to simulate realistic sexual networks.
+If you have not already done so, you can install simplasex using the following R command:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{devtools}\hlopt{::}\hlkwd{install_github}\hlstd{(}\hlstr{'lwhittles/simplasex'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+You should then be able to load simplasex using:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(}\hlstr{'simplasex'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Finally, if you want to reproduce exactly the same results as the ones shown in this tutorial, you should set the seed of your random number generator to the same as ours:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{0}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\section*{Static network simulation}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_static_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\hlkwd{suppressWarnings}\hlstd{(}\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpJfN4tjunnamed-chunk-5-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\section*{Simulation of outbreak in static network}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_outbreak_static_sn}\hlstd{(}\hlkwc{N}\hlstd{=}\hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\hlkwd{suppressWarnings}\hlstd{(}\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpJfN4tjunnamed-chunk-6-1} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{nrow}\hlstd{(s}\hlopt{$}\hlstd{log_infs)}
+\end{alltt}
+\begin{verbatim}
+## [1] 675
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\section*{Dynamic network simulation}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_dynamic_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\hlkwd{suppressWarnings}\hlstd{(}\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpJfN4tjunnamed-chunk-7-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\section*{Simulation of outbreak in dynamic network}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_dynamic_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{,} \hlkwc{n_infs} \hlstd{=} \hlnum{1}\hlstd{,}\hlkwc{beta}\hlstd{=}\hlnum{1000}\hlstd{)}
+\hlkwd{suppressWarnings}\hlstd{(}\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}
+    \hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{))}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpJfN4tjunnamed-chunk-8-1} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{nrow}\hlstd{(s}\hlopt{$}\hlstd{log_infs)}
+\end{alltt}
+\begin{verbatim}
+## [1] 444
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+\end{document}
