@@ -77,7 +77,8 @@ plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 
 Histogram of infection times:
 <<>>=
-hist(s$log_infs$time,xlab='Time',ylab='Infections',breaks = 20,main='')
+infs=s$log_infs$time[which(s$log_infs$c1=='S'&s$log_infs$c2=='U')]
+hist(infs,xlab='Time',ylab='Infections',breaks = 20, main='')
 @
 
 \section{Dynamic network simulation}
@@ -108,7 +109,8 @@ plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 
 Histogram of infection times:
 <<>>=
-hist(s$log_infs$time,xlab='Time',ylab='Infections',breaks = 20, main='')
+infs=s$log_infs$time[which(s$log_infs$c1=='S'&s$log_infs$c2=='U')]
+hist(infs,xlab='Time',ylab='Infections',breaks = 20, main='')
 @
 
 \end{document}
