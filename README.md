@@ -26,10 +26,13 @@ Example
 This is a basic example of usage.
 
 ``` r
-test_og <- sim_dynamic_sn(N = 1e3, gamma = 1.8, k0 = 0.5, phi = 1e4,
-                          t = 1+1/365, max.iter = 1e6)
-#> Time difference of 0.573673 secs
+test <- sim_dynamic_sn(N = 1e3, gamma = 1.8)
+plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+#> Warning in xy.coords(x, y, xlabel, ylabel, log): 29 y values <= 0 omitted
+#> from logarithmic plot
 ```
+
+![](figures/README-unnamed-chunk-3-1.png)
 
 More information and getting help
 ---------------------------------

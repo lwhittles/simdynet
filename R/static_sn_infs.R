@@ -1,11 +1,11 @@
 #' Simulation of outbreak in static network
 #' @export
-sim_outbreak_static_sn <- function(N, sn = 0, 
-                                   gamma, k0, phi,
-                                   n_infs = 0, 
+sim_outbreak_static_sn <- function(N=1e4, 
+                                   gamma=1.8, k0=0.5, phi=1e4, 
+                                   n_infs = 1, 
                                    beta = 1, psi = 1,  sigma = 1, 
                                    nu = 1, eta = 1, mu = 1, rho = 0,
-                                   t, max.iter) {
+                                   t=1, max.iter=1e6,sn = 0) {
   
   start <- Sys.time()
   
@@ -186,7 +186,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     step <- step + 1
   }
   
-  print(Sys.time() - start)
+  #print(Sys.time() - start)
   
   # remove unused storage
   log_infs <- log_infs[!is.na(log_infs[, 1]), , drop=F]

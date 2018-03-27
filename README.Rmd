@@ -34,8 +34,8 @@ library(simplasex)
 
 This is a basic example of usage. 
 ```{r}
-test_og <- sim_dynamic_sn(N = 1e3, gamma = 1.8, k0 = 0.5, phi = 1e4,
-                          t = 1+1/365, max.iter = 1e6)
+test <- sim_dynamic_sn(N = 1e3, gamma = 1.8)
+plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 ```
 
 ## More information and getting help

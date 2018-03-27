@@ -1,12 +1,12 @@
 #' Simulation of dynamic network
 #' @export
-sim_dynamic_sn <- function (N, 
-                            gamma, k0,  phi, 
+sim_dynamic_sn <- function (N = 1e4, 
+                            gamma = 1.8, k0 = 0.5,  phi = 1e4, 
                             n_infs = 0,
                             beta = 1, psi = 1,  sigma = 1, 
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
-                            t, max.iter = 1e6, burn.in = t,
-                            record=FALSE, record_term = 1, record_lengths = FALSE) {
+                            t = 1+burn.in, max.iter = 1e6, burn.in = 0,
+                            record=TRUE, record_term = 1, record_lengths = TRUE) {
   
   start <- Sys.time ()
   
@@ -113,7 +113,7 @@ sim_dynamic_sn <- function (N,
     
     if (time < burn.in) rinf <- 0 # total rate of infections = 0 (as implemented after burn-in)
     
-    if ((time > burn.in) & (time - tau < burn.in)) {      # start infections/recoveries
+    if ((time >= burn.in) & (time - tau <= burn.in)) {      # start infections/recoveries
       
       ranked_lambdas <- order(lambdas, decreasing = T)
       w <- ranked_lambdas[1:n_infs] # choose initial infections
@@ -137,7 +137,7 @@ sim_dynamic_sn <- function (N,
       }
       
       rscreen <- eta*sum(n_infs) # increase screening rate by eta
-      rrec <- nu # increase recovery rate by nu 
+      rrec <- nu*n_infs # increase recovery rate by nu 
       rinf <- NRel * beta  # R^_i(t_b)
     }
 
@@ -291,7 +291,7 @@ sim_dynamic_sn <- function (N,
     step <- step + 1
   }
   
-  print(Sys.time () - start)
+  #print(Sys.time () - start)
   
   # remove unused storage
   log_infs <- log_infs[!is.na(log_infs[,1]), ,drop=F]
