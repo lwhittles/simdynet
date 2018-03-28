@@ -32,15 +32,15 @@ library(simplasex)
 
 ## Example
 
-This is a basic example of usage. 
-```{r}
-test <- sim_dynamic_sn(N = 1e3, gamma = 1.8)
+This is a basic example of usage. To generate a dynamic network in a population of size 1000, and such that the degree distribution over a year follows a power law distribution with exponent 1.8, we can use:
+```{r,warning=F}
+test <- sim_dynamic_sn(N = 1000, gamma = 1.8)
 plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 ```
 
 ## More information and getting help
 
-For more detailed examples of how to use simplasex, see the vignettes [here](https://github.com/xavierdidelot/simplasex/tree/master/vignettes).
+For more detailed examples of how to use simplasex, see the vignette [here](https://github.com/lwhittles/simplasex/tree/master/vignettes).
 See also the help included in the package using the R command
 `help(package='simplasex')`. 
 

@@ -1,11 +1,33 @@
 #' Simulation of dynamic network
+#'
+#' @param N network size
+#' @param gamma exponent of power law distribution
+#' @param k0 parameter controlling proportion of unpartnered
+#' @param phi parameter controlling relationship turnaround rate
+#' @param n_infs number of initially infected individuals
+#' @param beta rate of transmission per partnership
+#' @param psi proportion of infections becoming symptomatic
+#' @param sigma reciprocal of duration of incubation period
+#' @param nu reciprocal of duration of carriage
+#' @param eta rate of screening when asymptomatic
+#' @param mu reciprocal of time to seeking treatment
+#' @param rho reciprocal of time to recovery following treatment
+#' @param n_vax number of vaccinated individuals
+#' @param vax_strat vaccination strategy, can be either 'target' or 'random'
+#' @param t duration of outbreak simulation
+#' @param max.iter maximum number of Gillespie iterations
+#' @param burn.in burn-in period
+#' @param record whether or not to record degree distribution
+#' @param record_term observation window of the degree distribution
+#' @param record_lengths whether or not to record partnership durations
+#'
 #' @export
 sim_dynamic_sn <- function (N = 1e4, 
-                            gamma = 1.8, k0 = 0.5,  phi = 1e4, 
+                            gamma = 1.8, k0 = 0.5,  phi = N, 
                             n_infs = 0,
                             beta = 1, psi = 1,  sigma = 1, 
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,
-                            t = 1+burn.in, max.iter = 1e6, burn.in = 0,
+                            t = 1, max.iter = 1e6, burn.in = 0,
                             record=TRUE, record_term = 1, record_lengths = TRUE) {
   
   start <- Sys.time ()
@@ -30,9 +52,7 @@ sim_dynamic_sn <- function (N = 1e4,
 
   # burn.in is in days not iterations
 
-  
-  time.window <- c(0, t)
-  time <- time.window[1]
+  time <- 0
   tau <- 0 # initialise
   times <- rep(0, max.iter) # storing times at which events happen
   
@@ -109,7 +129,7 @@ sim_dynamic_sn <- function (N = 1e4,
   
   breaktime <- ifelse(record, record_term, burn.in)
   
-  while(time < time.window[2] & step <= max.iter){
+  while(time < t & step <= max.iter){
     
     if (time < burn.in) rinf <- 0 # total rate of infections = 0 (as implemented after burn-in)
     

@@ -99,7 +99,7 @@ Throughout this vignette we use a population of size 1000 which is too small to 
 
 \section{Static network simulation}
 
-We can create a static snapshot of a sexual network over a year using:
+We can create a static snapshot of a sexual network observed over a year using:
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -109,6 +109,16 @@ We can create a static snapshot of a sexual network over a year using:
 \end{kframe}
 \end{knitrout}
 
+This function can take four parameters, which will be the same for the other network building functions described below:
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+\item \verb+N+ is the size of the population, the default is \verb+N=1e4+
+\item \verb+gamma+ is the exponent of the power law of the degree distribution, the default is \verb+gamma=1.8+
+\item \verb+k0+ determines the proportion of individuals without any relationship, the default is \verb+k0=0.5+
+\item \verb+phi+ determines the rate at which relationships are evolving, the default is \verb+phi=N+
+\end{itemize}
+
 Let's plot the degree distribution of this network:
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -117,7 +127,7 @@ Let's plot the degree distribution of this network:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-6-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-6-1} 
 
 }
 
@@ -129,7 +139,7 @@ Let's plot the degree distribution of this network:
 
 Simulation of outbreaks on static sexual networks is not recommended as it is 
 unrealistic of the way disease and network evolve on the same time scale.
-This facility is provided only for comparison with the dynamic method (cf below).
+This functionality is provided only for comparison with the more realistic dynamic method (cf below).
 To simulate an outbreak on the static network generated in the previous
 section, we can use:
 
@@ -159,7 +169,7 @@ Let's plot the degree distribution of this network:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-9-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-9-1} 
 
 }
 
@@ -176,7 +186,7 @@ Histogram of infection times:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-10-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-10-1} 
 
 }
 
@@ -204,7 +214,7 @@ Let's plot the degree distribution of this network:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-12-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-12-1} 
 
 }
 
@@ -232,7 +242,7 @@ Let's plot the degree distribution of this network:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-14-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-14-1} 
 
 }
 
@@ -249,7 +259,7 @@ Histogram of infection times:
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-15-1} 
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-15-1} 
 
 }
 

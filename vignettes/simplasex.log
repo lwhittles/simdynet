@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.6)  27 MAR 2018 16:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.6)  28 MAR 2018 10:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -224,100 +224,107 @@ LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 Package color Info: Redefining color shadecolor on input line 82.
 Package color Info: Redefining color shadecolor on input line 91.
 Package color Info: Redefining color shadecolor on input line 105.
-Package color Info: Redefining color shadecolor on input line 114.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 116.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-6-1.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 116.
+Package color Info: Redefining color shadecolor on input line 124.
+
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-6-1.
 pdf, id=1, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -6-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 6-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-6-1.pdf used on input line 120.
+IgRdy3unnamed-chunk-6-1.pdf used on input line 130.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
  [1
 
 {/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package color Info: Redefining color shadecolor on input line 137.
 Package color Info: Redefining color shadecolor on input line 147.
-Package color Info: Redefining color shadecolor on input line 156.
+Package color Info: Redefining color shadecolor on input line 157.
+Package color Info: Redefining color shadecolor on input line 166.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-9-1.
-pdf, id=12, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-9-1.
+pdf, id=13, 361.35pt x 361.35pt>
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -9-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 9-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-9-1.pdf used on input line 162.
+IgRdy3unnamed-chunk-9-1.pdf used on input line 172.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
- [2 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+ [2 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 6-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 172.
+Package color Info: Redefining color shadecolor on input line 182.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-10-1
-.pdf, id=21, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-10-1
+.pdf, id=22, 361.35pt x 361.35pt>
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -10-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 10-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-10-1.pdf used on input line 179.
+IgRdy3unnamed-chunk-10-1.pdf used on input line 189.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
-Package color Info: Redefining color shadecolor on input line 192.
- [3 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
-9-1.pdf> </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-c
+Package color Info: Redefining color shadecolor on input line 202.
+ [3 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
+9-1.pdf> </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-c
 hunk-10-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 201.
+Package color Info: Redefining color shadecolor on input line 211.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-12-1
-.pdf, id=35, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-12-1
+.pdf, id=36, 361.35pt x 361.35pt>
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -12-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 12-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-12-1.pdf used on input line 207.
+IgRdy3unnamed-chunk-12-1.pdf used on input line 217.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
-Package color Info: Redefining color shadecolor on input line 220.
-Package color Info: Redefining color shadecolor on input line 229.
+Package color Info: Redefining color shadecolor on input line 230.
+Package color Info: Redefining color shadecolor on input line 239.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-14-1
-.pdf, id=36, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-14-1
+.pdf, id=37, 361.35pt x 361.35pt>
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -14-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 14-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-14-1.pdf used on input line 235.
+IgRdy3unnamed-chunk-14-1.pdf used on input line 245.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
- [4 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+ [4 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 12-1.pdf>]
-Package color Info: Redefining color shadecolor on input line 245.
+Package color Info: Redefining color shadecolor on input line 255.
 
-</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-15-1
-.pdf, id=45, 361.35pt x 361.35pt>
-File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk
+</var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-15-1
+.pdf, id=46, 361.35pt x 361.35pt>
+File: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk
 -15-1.pdf Graphic file (type pdf)
 
-<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
+<use /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 15-1.pdf>
 Package pdftex.def Info: /var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp
-6dz2Xgunnamed-chunk-15-1.pdf used on input line 252.
+IgRdy3unnamed-chunk-15-1.pdf used on input line 262.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
- [5 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-chunk-
-14-1.pdf> </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//Rtmp6dz2Xgunnamed-
+ [5 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
+14-1.pdf> </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-
 chunk-15-1.pdf>] (./simplasex.aux) ) 
 Here is how much of TeX's memory you used:
- 2133 strings out of 493117
- 32888 string characters out of 6135434
- 98823 words of memory out of 5000000
- 5574 multiletter control sequences out of 15000+600000
+ 2150 strings out of 493117
+ 33190 string characters out of 6135434
+ 99823 words of memory out of 5000000
+ 5588 multiletter control sequences out of 15000+600000
  7448 words of font info for 27 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,6n,23p,296b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -326,11 +333,12 @@ ype1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmtt10.pfb>
-Output written on simplasex.pdf (5 pages, 104508 bytes).
+blic/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmtt10.pfb>
+Output written on simplasex.pdf (5 pages, 112342 bytes).
 PDF statistics:
- 76 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 80 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

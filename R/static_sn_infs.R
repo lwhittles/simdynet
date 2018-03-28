@@ -1,7 +1,24 @@
 #' Simulation of outbreak in static network
+#'
+#' @param N network size
+#' @param gamma exponent of power law distribution
+#' @param k0 parameter controlling proportion of unpartnered
+#' @param phi parameter controlling relationship turnaround rate
+#' @param n_infs number of initially infected individuals
+#' @param beta rate of transmission per partnership
+#' @param psi proportion of infections becoming symptomatic
+#' @param sigma reciprocal of duration of incubation period
+#' @param nu reciprocal of duration of carriage
+#' @param eta rate of screening when asymptomatic
+#' @param mu reciprocal of time to seeking treatment
+#' @param rho reciprocal of time to recovery following treatment
+#' @param t duration of outbreak simulation
+#' @param max.iter maximum number of Gillespie iterations
+#' @param sn sexual network, if pre-computed
+#'
 #' @export
 sim_outbreak_static_sn <- function(N=1e4, 
-                                   gamma=1.8, k0=0.5, phi=1e4, 
+                                   gamma=1.8, k0=0.5, phi=N, 
                                    n_infs = 1, 
                                    beta = 1, psi = 1,  sigma = 1, 
                                    nu = 1, eta = 1, mu = 1, rho = 0,
@@ -16,8 +33,7 @@ sim_outbreak_static_sn <- function(N=1e4,
                  nu = nu, eta = eta, mu =  mu, rho = rho, 
                  t = t, max.iter = max.iter)
   
-  time.window <- c(0, t)
-  time <- time.window[1]
+  time <- 0
   tau <- 0 # initialise
   times <- rep(0, max.iter) # storing times at which events happen
   
@@ -69,7 +85,7 @@ sim_outbreak_static_sn <- function(N=1e4,
   
   step <- 1
   
-  while(time < time.window[2] & step <= max.iter){
+  while(time < t & step <= max.iter){
     if (sum(Ninf)==0) break
 
     prob <- c(rinf, rsymp, rtreat, rrec, rscreen, rcure) # now a vector of length 6

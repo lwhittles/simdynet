@@ -4,10 +4,51 @@
 \alias{sim_dynamic_sn}
 \title{Simulation of dynamic network}
 \usage{
-sim_dynamic_sn(N, gamma, k0, phi, n_infs = 0, beta = 1, psi = 1,
-  sigma = 1, nu = 1, eta = 1, mu = 1, rho = 0, n_vax = 0,
-  vax_strat = NA, t, max.iter = 1e+06, burn.in = t, record = FALSE,
-  record_term = 1, record_lengths = FALSE)
+sim_dynamic_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = N, n_infs = 0,
+  beta = 1, psi = 1, sigma = 1, nu = 1, eta = 1, mu = 1, rho = 0,
+  n_vax = 0, vax_strat = NA, t = 1, max.iter = 1e+06, burn.in = 0,
+  record = TRUE, record_term = 1, record_lengths = TRUE)
+}
+\arguments{
+\item{N}{network size}
+
+\item{gamma}{exponent of power law distribution}
+
+\item{k0}{parameter controlling proportion of unpartnered}
+
+\item{phi}{parameter controlling relationship turnaround rate}
+
+\item{n_infs}{number of initially infected individuals}
+
+\item{beta}{rate of transmission per partnership}
+
+\item{psi}{proportion of infections becoming symptomatic}
+
+\item{sigma}{reciprocal of duration of incubation period}
+
+\item{nu}{reciprocal of duration of carriage}
+
+\item{eta}{rate of screening when asymptomatic}
+
+\item{mu}{reciprocal of time to seeking treatment}
+
+\item{rho}{reciprocal of time to recovery following treatment}
+
+\item{n_vax}{number of vaccinated individuals}
+
+\item{vax_strat}{vaccination strategy, can be either 'target' or 'random'}
+
+\item{t}{duration of outbreak simulation}
+
+\item{max.iter}{maximum number of Gillespie iterations}
+
+\item{burn.in}{burn-in period}
+
+\item{record}{whether or not to record degree distribution}
+
+\item{record_term}{observation window of the degree distribution}
+
+\item{record_lengths}{whether or not to record partnership durations}
 }
 \description{
 Simulation of dynamic network
