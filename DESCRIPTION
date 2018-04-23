@@ -1,6 +1,6 @@
-Package: simplasex
+Package: simdynet
 Type: Package
-Title: simplasex project
+Title: simdynet project
 Version: 0.1
 Date: 2018-03-26
 Author: Lilith Whittles <l.whittles14@imperial.ac.uk>, Xavier Didelot <xavier.didelot@gmail.com>
@@ -8,7 +8,7 @@ Maintainer: Lilith Whittles <l.whittles14@imperial.ac.uk>
 Depends: R (>= 3.0.0)
 Imports: stats, graphics
 Suggests: knitr
-Description: The simplasex project is still work in progress.
+Description: The simdynet project is still work in progress.
 VignetteBuilder: knitr
 License: MIT + file LICENSE
 RoxygenNote: 6.0.1

@@ -6,7 +6,7 @@
 \usepackage{geometry}
 \geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
 
-\title{Tutorial introducing the R package simplasex}
+\title{Tutorial introducing the R package simdynet}
 \author{Lilith Whittles and Xavier Didelot}
 \begin{document}
 <<include=FALSE>>=
@@ -20,16 +20,16 @@ opts_chunk$set(fig.width=5,fig.height=5,out.width="4in",out.height="4in",fig.ali
 
 \section{Introduction}
 
-The R package simplasex provides functions to simulate realistic sexual networks.
-If you have not already done so, you can install simplasex using the following R command:
+The R package simdynet provides functions to simulate realistic sexual networks.
+If you have not already done so, you can install simdynet using the following R command:
 
 <<eval=FALSE>>=
-devtools::install_github('lwhittles/simplasex')
+devtools::install_github('lwhittles/simdynet')
 @
 
-You should then be able to load simplasex using:
+You should then be able to load simdynet using:
 <<>>=
-library('simplasex')
+library('simdynet')
 @
 
 Finally, if you want to reproduce exactly the same results as the ones shown in this tutorial, you should set the seed of your random number generator to the same as ours:

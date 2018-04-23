@@ -2,8 +2,8 @@ This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**simplasex.tex
-(./simplasex.tex
+**simdynet.tex
+(./simdynet.tex
 LaTeX2e <2014/05/01>
 Babel <3.9k> and hyphenation patterns for 78 languages loaded.
 (/usr/local/texlive/2014/texmf-dist/tex/latex/base/article.cls
@@ -105,8 +105,8 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
 tim
 )
-(./simplasex.aux)
-\openout1 = `simplasex.aux'.
+(./simdynet.aux)
+\openout1 = `simdynet.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 62.
 LaTeX Font Info:    ... okay on input line 62.
@@ -319,7 +319,7 @@ IgRdy3unnamed-chunk-15-1.pdf used on input line 262.
 (pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
  [5 </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-
 14-1.pdf> </var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-
-chunk-15-1.pdf>] (./simplasex.aux) ) 
+chunk-15-1.pdf>] (./simdynet.aux) ) 
 Here is how much of TeX's memory you used:
  2150 strings out of 493117
  33190 string characters out of 6135434
@@ -335,7 +335,7 @@ pe1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type
 public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/pub
 lic/amsfonts/cm/cmtt10.pfb>
-Output written on simplasex.pdf (5 pages, 112342 bytes).
+Output written on simdynet.pdf (5 pages, 112342 bytes).
 PDF statistics:
  80 PDF objects out of 1000 (max. 8388607)
  54 compressed objects within 1 object stream

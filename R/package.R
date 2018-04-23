@@ -1,7 +1,7 @@
-#' @name simplasex
-#' @title simplasex project
+#' @name simdynet
+#' @title simdynet project
 #'
-#' @description This is the simplasex project.
+#' @description This is the simdynet project.
 #'
 #' The main functions of the package are:
 #' \itemize{
@@ -14,7 +14,7 @@
 #' @author Lilith Whittles \email{l.whittles14@imperial.ac.uk} and Xavier Didelot \email{xavier.didelot@gmail.com}
 #'
 #' @references Whittles et al, Manuscript in prepration.
-#' @seealso https://github.com/lwhittles/simplasex
+#' @seealso https://github.com/lwhittles/simdynet
 
 #' @import stats
 #' @import graphics

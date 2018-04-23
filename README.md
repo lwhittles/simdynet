@@ -1,23 +1,23 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-simplasex
+simdynet
 =========
 
-The goal of simplasex is to simulate realistic dynamic sexual networks.
+The goal of simdynet is to simulate realistic dynamic sexual networks.
 
 Installation
 ------------
 
-You can install simplasex from github with:
+You can install simdynet from github with:
 
 ``` r
-devtools::install_github("lwhittles/simplasex")
+devtools::install_github("lwhittles/simdynet")
 ```
 
 The package can then be loaded using:
 
 ``` r
-library(simplasex)
+library(simdynet)
 ```
 
 Example
@@ -35,6 +35,6 @@ plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 More information and getting help
 ---------------------------------
 
-For more detailed examples of how to use simplasex, see the vignette [here](https://github.com/lwhittles/simplasex/tree/master/vignettes). See also the help included in the package using the R command `help(package='simplasex')`.
+For more detailed examples of how to use simdynet, see the vignette [here](https://github.com/lwhittles/simdynet/tree/master/vignettes). See also the help included in the package using the R command `help(package='simdynet')`.
 
-If you have any problem or question please create an issue [here](https://github.com/lwhittles/simplasex/issues) or get in touch by emailing `l.whittles14@imperial.ac.uk` or `xavier.didelot@gmail.com`
+If you have any problem or question please create an issue [here](https://github.com/lwhittles/simdynet/issues) or get in touch by emailing `l.whittles14@imperial.ac.uk` or `xavier.didelot@gmail.com`
