@@ -4,9 +4,10 @@
 \alias{sim_outbreak_static_sn}
 \title{Simulation of outbreak in static network}
 \usage{
-sim_outbreak_static_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = N,
-  n_infs = 1, beta = 1, psi = 1, sigma = 1, nu = 1, eta = 1,
-  mu = 1, rho = 0, t = 1, max.iter = 1e+06, sn = 0)
+sim_outbreak_static_sn(N = 10000, gamma = 1.8, k0 = 0.5,
+  phi = 10000, n_infs = 1, beta = 1, psi = 1, sigma = 1,
+  nu = 1, eta = 1, mu = 1, rho = 0, t = 1, max.iter = 1e+06,
+  sn = 0)
 }
 \arguments{
 \item{N}{network size}

@@ -23,7 +23,7 @@
 #'
 #' @export
 sim_dynamic_sn <- function (N = 1e4, 
-                            gamma = 1.8, k0 = 0.5,  phi = N, 
+                            gamma = 1.8, k0 = 0.5,  phi = 1e4, 
                             n_infs = 0,
                             beta = 1, psi = 1,  sigma = 1, 
                             nu = 1, eta = 1, mu = 1,rho = 0, n_vax = 0, vax_strat=NA,

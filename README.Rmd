@@ -40,11 +40,7 @@ plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 
 ## More information and getting help
 
-<<<<<<< HEAD
-For more detailed examples of how to use simdynet, see the vignettes [here](https://github.com/xavierdidelot/simdynet/tree/master/vignettes).
-=======
 For more detailed examples of how to use simdynet, see the vignette [here](https://github.com/lwhittles/simdynet/tree/master/vignettes).
->>>>>>> d769c5fd3d2aa68ff7a4f2f44d9687d2efb2798a
 See also the help included in the package using the R command
 `help(package='simdynet')`. 
 

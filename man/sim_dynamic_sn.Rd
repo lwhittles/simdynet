@@ -4,10 +4,11 @@
 \alias{sim_dynamic_sn}
 \title{Simulation of dynamic network}
 \usage{
-sim_dynamic_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = N, n_infs = 0,
-  beta = 1, psi = 1, sigma = 1, nu = 1, eta = 1, mu = 1, rho = 0,
-  n_vax = 0, vax_strat = NA, t = 1, max.iter = 1e+06, burn.in = 0,
-  record = TRUE, record_term = 1, record_lengths = TRUE)
+sim_dynamic_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = 10000,
+  n_infs = 0, beta = 1, psi = 1, sigma = 1, nu = 1, eta = 1,
+  mu = 1, rho = 0, n_vax = 0, vax_strat = NA, t = 1,
+  max.iter = 1e+06, burn.in = 0, record = TRUE, record_term = 1,
+  record_lengths = TRUE)
 }
 \arguments{
 \item{N}{network size}

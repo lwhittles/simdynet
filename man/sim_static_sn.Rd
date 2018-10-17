@@ -4,7 +4,7 @@
 \alias{sim_static_sn}
 \title{Simulation of static network}
 \usage{
-sim_static_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = N)
+sim_static_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = 10000)
 }
 \arguments{
 \item{N}{network size}
