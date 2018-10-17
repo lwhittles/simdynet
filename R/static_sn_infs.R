@@ -1,11 +1,28 @@
 #' Simulation of outbreak in static network
+#'
+#' @param N network size
+#' @param gamma exponent of power law distribution
+#' @param k0 parameter controlling proportion of unpartnered
+#' @param phi parameter controlling relationship turnaround rate
+#' @param n_infs number of initially infected individuals
+#' @param beta rate of transmission per partnership
+#' @param psi proportion of infections becoming symptomatic
+#' @param sigma reciprocal of duration of incubation period
+#' @param nu reciprocal of duration of carriage
+#' @param eta rate of screening when asymptomatic
+#' @param mu reciprocal of time to seeking treatment
+#' @param rho reciprocal of time to recovery following treatment
+#' @param t duration of outbreak simulation
+#' @param max.iter maximum number of Gillespie iterations
+#' @param sn sexual network, if pre-computed
+#'
 #' @export
-sim_outbreak_static_sn <- function(N, sn = 0, 
-                                   gamma, k0, phi,
-                                   n_infs = 0, 
+sim_outbreak_static_sn <- function(N=1e4, 
+                                   gamma=1.8, k0=0.5, phi=N, 
+                                   n_infs = 1, 
                                    beta = 1, psi = 1,  sigma = 1, 
                                    nu = 1, eta = 1, mu = 1, rho = 0,
-                                   t, max.iter) {
+                                   t=1, max.iter=1e6,sn = 0) {
   
   start <- Sys.time()
   
@@ -16,17 +33,16 @@ sim_outbreak_static_sn <- function(N, sn = 0,
                  nu = nu, eta = eta, mu =  mu, rho = rho, 
                  t = t, max.iter = max.iter)
   
-  time.window <- c(0, t)
-  time <- time.window[1]
+  time <- 0
   tau <- 0 # initialise
   times <- rep(0, max.iter) # storing times at which events happen
   
   if(!is.list(sn)) {
     sn <- sim_static_sn(gamma = gamma, k0 = k0, N = N, phi = phi)
-    sn$rec_rels <- which(sn$res == 1, arr.ind = T)
-    colnames(sn$rec_rels) <- c("p1", "p2")
   }
-  
+  sn$rec_rels <- which(sn$res == 1, arr.ind = T)
+  colnames(sn$rec_rels) <- c("p1", "p2")
+
   lambdas <- sn$lambdas
   
   rels <- sn$rec_rels[, c("p1", "p2")]
@@ -69,7 +85,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
   
   step <- 1
   
-  while(time < time.window[2] & step <= max.iter){
+  while(time < t & step <= max.iter){
     if (sum(Ninf)==0) break
 
     prob <- c(rinf, rsymp, rtreat, rrec, rscreen, rcure) # now a vector of length 6
@@ -186,7 +202,7 @@ sim_outbreak_static_sn <- function(N, sn = 0,
     step <- step + 1
   }
   
-  print(Sys.time() - start)
+  #print(Sys.time() - start)
   
   # remove unused storage
   log_infs <- log_infs[!is.na(log_infs[, 1]), , drop=F]

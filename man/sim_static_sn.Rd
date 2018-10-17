@@ -4,7 +4,16 @@
 \alias{sim_static_sn}
 \title{Simulation of static network}
 \usage{
-sim_static_sn(gamma, k0, N = 10000, phi = 10000)
+sim_static_sn(N = 10000, gamma = 1.8, k0 = 0.5, phi = N)
+}
+\arguments{
+\item{N}{network size}
+
+\item{gamma}{exponent of power law distribution}
+
+\item{k0}{parameter controlling proportion of unpartnered}
+
+\item{phi}{parameter controlling relationship turnaround rate}
 }
 \description{
 Simulation of static network

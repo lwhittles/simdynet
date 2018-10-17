@@ -1,0 +1,270 @@
+\documentclass[a4paper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+
+%\VignetteIndexEntry{UsingSimplasex}
+%\VignetteEngine{knitr::knitr}
+
+\usepackage{geometry}
+\geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\title{Tutorial introducing the R package simdynet}
+\author{Lilith Whittles and Xavier Didelot}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+\maketitle
+
+\section{Introduction}
+
+The R package simdynet provides functions to simulate realistic sexual networks.
+If you have not already done so, you can install simdynet using the following R command:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{devtools}\hlopt{::}\hlkwd{install_github}\hlstd{(}\hlstr{'lwhittles/simdynet'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+You should then be able to load simdynet using:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(}\hlstr{'simdynet'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Finally, if you want to reproduce exactly the same results as the ones shown in this tutorial, you should set the seed of your random number generator to the same as ours:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{set.seed}\hlstd{(}\hlnum{0}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Throughout this vignette we use a population of size 1000 which is too small to be realistic in most settings, but this is useful to make execution of commands fast for illustration purposes.
+
+\section{Static network simulation}
+
+We can create a static snapshot of a sexual network observed over a year using:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_static_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+This function can take four parameters, which will be the same for the other network building functions described below:
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+\item \verb+N+ is the size of the population, the default is \verb+N=1e4+
+\item \verb+gamma+ is the exponent of the power law of the degree distribution, the default is \verb+gamma=1.8+
+\item \verb+k0+ determines the proportion of individuals without any relationship, the default is \verb+k0=0.5+
+\item \verb+phi+ determines the rate at which relationships are evolving, the default is \verb+phi=N+
+\end{itemize}
+
+Let's plot the degree distribution of this network:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-6-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\section{Simulation of outbreak in static network}
+
+Simulation of outbreaks on static sexual networks is not recommended as it is 
+unrealistic of the way disease and network evolve on the same time scale.
+This functionality is provided only for comparison with the more realistic dynamic method (cf below).
+To simulate an outbreak on the static network generated in the previous
+section, we can use:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_outbreak_static_sn}\hlstd{(}\hlkwc{sn} \hlstd{= s)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Or alternatively we can simulate both the static network and the outbreak using a single command:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_outbreak_static_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Let's plot the degree distribution of this network:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-9-1} 
+
+}
+
+
+
+\end{knitrout}
+
+Histogram of infection times:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{infs}\hlkwb{=}\hlstd{s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{time[}\hlkwd{which}\hlstd{(s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{c1}\hlopt{==}\hlstr{'S'}\hlopt{&}\hlstd{s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{c2}\hlopt{==}\hlstr{'U'}\hlstd{)]}
+\hlkwd{hist}\hlstd{(infs,}\hlkwc{xlab}\hlstd{=}\hlstr{'Time'}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{'Infections'}\hlstd{,}\hlkwc{breaks} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{''}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-10-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\section{Dynamic network simulation}
+
+We can simulate a dynamic network using:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_dynamic_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Let's plot the degree distribution of this network:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-12-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\section{Simulation of outbreak in dynamic network}
+
+We can simulate a dynamic network and an outbreak simultaneously using:
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{s} \hlkwb{<-} \hlkwd{sim_dynamic_sn}\hlstd{(}\hlkwc{N} \hlstd{=} \hlnum{1000}\hlstd{,} \hlkwc{gamma} \hlstd{=} \hlnum{1.8}\hlstd{,} \hlkwc{n_infs} \hlstd{=} \hlnum{1}\hlstd{,}\hlkwc{beta}\hlstd{=}\hlnum{2000}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+Let's plot the degree distribution of this network:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{plot}\hlstd{(s}\hlopt{$}\hlstd{dd,}\hlkwc{xlab} \hlstd{=} \hlstr{''}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Degree distribution'}\hlstd{,}\hlkwc{log} \hlstd{=} \hlstr{'xy'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-14-1} 
+
+}
+
+
+
+\end{knitrout}
+
+Histogram of infection times:
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{infs}\hlkwb{=}\hlstd{s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{time[}\hlkwd{which}\hlstd{(s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{c1}\hlopt{==}\hlstr{'S'}\hlopt{&}\hlstd{s}\hlopt{$}\hlstd{log_infs}\hlopt{$}\hlstd{c2}\hlopt{==}\hlstr{'U'}\hlstd{)]}
+\hlkwd{hist}\hlstd{(infs,}\hlkwc{xlab}\hlstd{=}\hlstr{'Time'}\hlstd{,}\hlkwc{ylab}\hlstd{=}\hlstr{'Infections'}\hlstd{,}\hlkwc{breaks} \hlstd{=} \hlnum{20}\hlstd{,} \hlkwc{main}\hlstd{=}\hlstr{''}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=4in,height=4in]{/var/folders/36/jfh5wwjd5ps05vj02q2b7dk00000gp/T//RtmpIgRdy3unnamed-chunk-15-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{document}

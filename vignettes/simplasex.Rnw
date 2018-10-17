@@ -1,0 +1,126 @@
+\documentclass[a4paper]{article}
+
+%\VignetteIndexEntry{UsingSimplasex}
+%\VignetteEngine{knitr::knitr}
+
+\usepackage{geometry}
+\geometry{tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+
+\title{Tutorial introducing the R package simdynet}
+\author{Lilith Whittles and Xavier Didelot}
+\begin{document}
+<<include=FALSE>>=
+library(knitr)
+temppath <- tempdir()
+opts_chunk$set(fig.path = temppath)
+opts_chunk$set(fig.width=5,fig.height=5,out.width="4in",out.height="4in",fig.align = "center")
+@
+
+\maketitle
+
+\section{Introduction}
+
+The R package simdynet provides functions to simulate realistic sexual networks.
+If you have not already done so, you can install simdynet using the following R command:
+
+<<eval=FALSE>>=
+devtools::install_github('lwhittles/simdynet')
+@
+
+You should then be able to load simdynet using:
+<<>>=
+library('simdynet')
+@
+
+Finally, if you want to reproduce exactly the same results as the ones shown in this tutorial, you should set the seed of your random number generator to the same as ours:
+<<>>=
+set.seed(0)
+@
+
+Throughout this vignette we use a population of size 1000 which is too small to be realistic in most settings, but this is useful to make execution of commands fast for illustration purposes.
+
+\section{Static network simulation}
+
+We can create a static snapshot of a sexual network observed over a year using:
+
+<<>>=
+s <- sim_static_sn(N = 1000, gamma = 1.8)
+@
+
+This function can take four parameters, which will be the same for the other network building functions described below:
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\setlength{\parskip}{0pt}
+\item \verb+N+ is the size of the population, the default is \verb+N=1e4+
+\item \verb+gamma+ is the exponent of the power law of the degree distribution, the default is \verb+gamma=1.8+
+\item \verb+k0+ determines the proportion of individuals without any relationship, the default is \verb+k0=0.5+
+\item \verb+phi+ determines the rate at which relationships are evolving, the default is \verb+phi=N+
+\end{itemize}
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+\section{Simulation of outbreak in static network}
+
+Simulation of outbreaks on static sexual networks is not recommended as it is 
+unrealistic of the way disease and network evolve on the same time scale.
+This functionality is provided only for comparison with the more realistic dynamic method (cf below).
+To simulate an outbreak on the static network generated in the previous
+section, we can use:
+
+<<>>=
+s <- sim_outbreak_static_sn(sn = s)
+@
+
+Or alternatively we can simulate both the static network and the outbreak using a single command:
+
+<<>>=
+s <- sim_outbreak_static_sn(N = 1000, gamma = 1.8)
+@
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+Histogram of infection times:
+<<>>=
+infs=s$log_infs$time[which(s$log_infs$c1=='S'&s$log_infs$c2=='U')]
+hist(infs,xlab='Time',ylab='Infections',breaks = 20, main='')
+@
+
+\section{Dynamic network simulation}
+
+We can simulate a dynamic network using:
+
+<<>>=
+s <- sim_dynamic_sn(N = 1000, gamma = 1.8)
+@
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+\section{Simulation of outbreak in dynamic network}
+
+We can simulate a dynamic network and an outbreak simultaneously using:
+
+<<>>=
+s <- sim_dynamic_sn(N = 1000, gamma = 1.8, n_infs = 1,beta=2000)
+@
+
+Let's plot the degree distribution of this network:
+<<warning=FALSE>>=
+plot(s$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
+@
+
+Histogram of infection times:
+<<>>=
+infs=s$log_infs$time[which(s$log_infs$c1=='S'&s$log_infs$c2=='U')]
+hist(infs,xlab='Time',ylab='Infections',breaks = 20, main='')
+@
+
+\end{document}

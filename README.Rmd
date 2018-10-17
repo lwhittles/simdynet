@@ -32,15 +32,19 @@ library(simdynet)
 
 ## Example
 
-This is a basic example of usage. 
-```{r}
-test_og <- sim_dynamic_sn(N = 1e3, gamma = 1.8, k0 = 0.5, phi = 1e4,
-                          t = 1+1/365, max.iter = 1e6)
+This is a basic example of usage. To generate a dynamic network in a population of size 1000, and such that the degree distribution over a year follows a power law distribution with exponent 1.8, we can use:
+```{r,warning=F}
+test <- sim_dynamic_sn(N = 1000, gamma = 1.8)
+plot(test$dd,xlab = '',ylab = 'Degree distribution',log = 'xy')
 ```
 
 ## More information and getting help
 
+<<<<<<< HEAD
 For more detailed examples of how to use simdynet, see the vignettes [here](https://github.com/xavierdidelot/simdynet/tree/master/vignettes).
+=======
+For more detailed examples of how to use simdynet, see the vignette [here](https://github.com/lwhittles/simdynet/tree/master/vignettes).
+>>>>>>> d769c5fd3d2aa68ff7a4f2f44d9687d2efb2798a
 See also the help included in the package using the R command
 `help(package='simdynet')`. 
 

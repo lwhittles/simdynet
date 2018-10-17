@@ -1,6 +1,12 @@
 #' Simulation of static network
+#'
+#' @param N network size
+#' @param gamma exponent of power law distribution
+#' @param k0 parameter controlling proportion of unpartnered
+#' @param phi parameter controlling relationship turnaround rate
+#'
 #' @export
-sim_static_sn <- function(gamma, k0,  N=1e4, phi = 1e4) {
+sim_static_sn <- function(N=1e4, gamma = 1.8, k0 = 0.5,  phi = N) {
   inputs <- list(gamma = gamma, k0 = k0, N = N,  phi = phi)
   l  <- rexp(n = N, rate = 1) # draw N lambdas from Exp(1) dist
   
