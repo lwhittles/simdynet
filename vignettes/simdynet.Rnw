@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
 
-%\VignetteIndexEntry{UsingSimplasex}
+%\VignetteIndexEntry{UsingSimdynet}
 %\VignetteEngine{knitr::knitr}
 
 \usepackage{geometry}
