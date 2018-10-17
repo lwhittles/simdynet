@@ -317,8 +317,8 @@ sim_dynamic_sn <- function (N,
   
   if(record_lengths) {
     length_mat <- length_mat[1:total_rel, ] # remove unused storage
-    length_mat <- cbind(length_mat, "length" = length_mat[,"end"] - length_mat[,"start"])
-    sn <- c(sn, record_lengths)
+    # length_mat <- cbind(length_mat, "length" = length_mat[,"end"] - length_mat[,"start"])
+    sn <- c(sn, "log_rels" = length_mat)
   }
   
   if(record) {
