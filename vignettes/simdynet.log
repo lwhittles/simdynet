@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.26)  17 OCT 2018 09:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.2.26)  17 OCT 2018 09:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -223,113 +223,123 @@ Package color Info: Redefining color shadecolor on input line 73.
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 75.
 Package color Info: Redefining color shadecolor on input line 82.
-Package color Info: Redefining color shadecolor on input line 93.
-Package color Info: Redefining color shadecolor on input line 107.
-
-Overfull \hbox (11.37177pt too wide) in paragraph at lines 113--113
-[]\OT1/cmtt/m/n/10 ## Error in sim[]static[]sn(N = 1000, gamma = 1.8): could no
-t find function "sim[]static[]sn"[] 
- []
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 120.
+Package color Info: Redefining color shadecolor on input line 91.
+Package color Info: Redefining color shadecolor on input line 105.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 116.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 120.
-Package color Info: Redefining color shadecolor on input line 128.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 116.
+Package color Info: Redefining color shadecolor on input line 124.
 
-Overfull \hbox (6.75186pt too wide) in paragraph at lines 134--134
-[]\OT1/cmtt/m/n/10 ## Error in plot(s$dd, xlab = "", ylab = "Degree distributio
-n", log = "xy"): object 's'
- []
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-6-1.
+pdf, id=1, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-6-1.pdf Graphic file (type pdf)
 
-Package color Info: Redefining color shadecolor on input line 146.
-[1
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+6-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-6-1.pdf used on input line 130.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+ [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (24.18163pt too wide) in paragraph at lines 152--152
-[]\OT1/cmtt/m/n/10 ## Error in sim[]outbreak[]static[]sn(sn = s): could not fin
-d function "sim[]outbreak[]static[]sn"[] 
- []
+Package color Info: Redefining color shadecolor on input line 147.
+Package color Info: Redefining color shadecolor on input line 157.
+Package color Info: Redefining color shadecolor on input line 166.
 
-Package color Info: Redefining color shadecolor on input line 158.
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-9-1.
+pdf, id=13, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-9-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (102.93094pt too wide) in paragraph at lines 164--164
-[]\OT1/cmtt/m/n/10 ## Error in sim[]outbreak[]static[]sn(N = 1000, gamma = 1.8)
-: could not find function "sim[]outbreak[]static[]sn"[] 
- []
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+9-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-9-1.pdf used on input line 172.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+ [2 </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+6-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 182.
 
-Package color Info: Redefining color shadecolor on input line 169.
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-10-1
+.pdf, id=22, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-10-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (6.75186pt too wide) in paragraph at lines 175--175
-[]\OT1/cmtt/m/n/10 ## Error in plot(s$dd, xlab = "", ylab = "Degree distributio
-n", log = "xy"): object 's'
- []
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+10-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-10-1.pdf used on input line 189.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+Package color Info: Redefining color shadecolor on input line 202.
+ [3 </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+9-1.pdf> </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-c
+hunk-10-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 211.
 
-Package color Info: Redefining color shadecolor on input line 180.
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-12-1
+.pdf, id=36, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-12-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (22.50172pt too wide) in paragraph at lines 191--191
-[]\OT1/cmtt/m/n/10 ## Error in hist(infs, xlab = "Time", ylab = "Infections", b
-reaks = 20, main = ""): object
- []
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+12-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-12-1.pdf used on input line 217.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+Package color Info: Redefining color shadecolor on input line 230.
+Package color Info: Redefining color shadecolor on input line 239.
 
-Package color Info: Redefining color shadecolor on input line 199.
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-14-1
+.pdf, id=37, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-14-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (21.87167pt too wide) in paragraph at lines 205--205
-[]\OT1/cmtt/m/n/10 ## Error in sim[]dynamic[]sn(N = 1000, gamma = 1.8): could n
-ot find function "sim[]dynamic[]sn"[] 
- []
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+14-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-14-1.pdf used on input line 245.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+ [4 </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+12-1.pdf>]
+Package color Info: Redefining color shadecolor on input line 255.
 
-Package color Info: Redefining color shadecolor on input line 210.
+</var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-15-1
+.pdf, id=46, 361.35pt x 361.35pt>
+File: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk
+-15-1.pdf Graphic file (type pdf)
 
-Overfull \hbox (6.75186pt too wide) in paragraph at lines 216--216
-[]\OT1/cmtt/m/n/10 ## Error in plot(s$dd, xlab = "", ylab = "Degree distributio
-n", log = "xy"): object 's'
- []
-
-Package color Info: Redefining color shadecolor on input line 224.
-
-Overfull \hbox (18.09172pt too wide) in paragraph at lines 230--230
-[]\OT1/cmtt/m/n/10 ## Error in sim[]dynamic[]sn(N = 1000, gamma = 1.8, n[]infs 
-= 1, beta = 2000): could not find
- []
-
-Package color Info: Redefining color shadecolor on input line 235.
-[2]
-Overfull \hbox (6.75186pt too wide) in paragraph at lines 241--241
-[]\OT1/cmtt/m/n/10 ## Error in plot(s$dd, xlab = "", ylab = "Degree distributio
-n", log = "xy"): object 's'
- []
-
-Package color Info: Redefining color shadecolor on input line 246.
-
-Overfull \hbox (22.50172pt too wide) in paragraph at lines 257--257
-[]\OT1/cmtt/m/n/10 ## Error in hist(infs, xlab = "Time", ylab = "Infections", b
-reaks = 20, main = ""): object
- []
-
-[3] (./simdynet.aux) ) 
+<use /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+15-1.pdf>
+Package pdftex.def Info: /var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//Rtmp
+TzcaaFunnamed-chunk-15-1.pdf used on input line 262.
+(pdftex.def)             Requested size: 289.0804pt x 289.0804pt.
+ [5 </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-chunk-
+14-1.pdf> </var/folders/4j/vymc3ypd7xz4xz76b3mtz97m0000gp/T//RtmpTzcaaFunnamed-
+chunk-15-1.pdf>] (./simdynet.aux) ) 
 Here is how much of TeX's memory you used:
- 2125 strings out of 492995
- 31034 string characters out of 6132704
- 102970 words of memory out of 5000000
- 5659 multiletter control sequences out of 15000+600000
+ 2156 strings out of 492995
+ 33334 string characters out of 6132704
+ 100970 words of memory out of 5000000
+ 5682 multiletter control sequences out of 15000+600000
  7448 words of font info for 27 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,6n,25p,295b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmtt10.pfb>
-Output written on simdynet.pdf (3 pages, 82484 bytes).
+</usr/local/texlive/2017/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmtt10.pfb>
+Output written on simdynet.pdf (5 pages, 112585 bytes).
 PDF statistics:
- 38 PDF objects out of 1000 (max. 8388607)
- 26 compressed objects within 1 object stream
+ 80 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
